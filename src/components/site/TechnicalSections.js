@@ -343,7 +343,7 @@ const TechnicalSections = ({ token }) => {
       if (!mainFacture) return;
 
       if (mainFacture.Main_Feature_ID) {
-        const url = `http://191.252.103.153:3000/api/main-factures/${mainFacture.Main_Feature_ID}`;
+        const url = `/api/main-factures/${mainFacture.Main_Feature_ID}`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {
@@ -402,7 +402,7 @@ const TechnicalSections = ({ token }) => {
 
       // 🔹 Se o item tiver ID, remove no backend
       if (itemAdditional.Included_Item_ID) {
-        const url = `http://191.252.103.153:3000/api/included-items/${itemAdditional.Included_Item_ID}`;
+        const url = `/api/included-items/${itemAdditional.Included_Item_ID}`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {
@@ -512,7 +512,7 @@ const TechnicalSections = ({ token }) => {
 
       // 🔹 Se o item tiver ID, remove no backend
       if (itemAdditional.Id_Item_additional) {
-        const url = `http://191.252.103.153:3000/api/item-additional/${itemAdditional.Id_Item_additional}`;
+        const url = `/api/item-additional/${itemAdditional.Id_Item_additional}`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {
