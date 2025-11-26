@@ -75,11 +75,7 @@ export const GlobalContextProvider = ({ children }) => {
           label: "Banner home",
           link: "/admin/layout/banners",
         },
-        {
-          id: 53,
-          label: "Subcategorias Navegaçãodfd",
-          link: "/admin/layout/navegation",
-        },
+
         {
           id: 54,
           label: "Institucional",
@@ -96,6 +92,13 @@ export const GlobalContextProvider = ({ children }) => {
     { id: 8, label: "Sair", link: "/logout", icon: <FaSignOutAlt /> },
   ];
 
+  /*
+   {
+          id: 53,
+          label: "Subcategorias Navegação",
+          link: "/admin/layout/navegation",
+        },
+  */
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
