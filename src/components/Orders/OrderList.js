@@ -9,14 +9,26 @@ export default function OrderList({ token }) {
   const [timed, setTimed] = useState(Date.now());
   const allOrders = new Orders();
 
-  useEffect(() => {
+useEffect(() => {
     const showOrdersPendent = async () => {
       const response = await allOrders.findOrdersPendent(token);
-      setOrderApi(response);
-      console.log(response);
+
+      // Mapeia e corrige a estrutura dos pedidos ANTES de salvar no state
+      const correctedOrders = response.map(order => ({
+        ...order,
+        // Tenta fazer o parse de buy_cart. Se falhar, usa o valor original.
+        buy_cart: typeof order.buy_cart === 'string' 
+                  ? JSON.parse(order.buy_cart || '[]') 
+                  : order.buy_cart,
+      }));
+
+      setOrderApi(correctedOrders);
+      // console.log(response); // Agora você pode logar correctedOrders
     };
     showOrdersPendent();
   }, [timed]);
+
+
 
   const openModal = (order) => {
     setSelectedOrder(order);
