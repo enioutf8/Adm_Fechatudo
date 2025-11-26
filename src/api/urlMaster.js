@@ -1,7 +1,7 @@
 export default class Urlmaster {
   getUrlMaster() {
     const urlApi = "/api/";
-    const urlSite = "/";
+    const urlSite = "/auth/";
 
     return { urlApi, urlSite };
   }

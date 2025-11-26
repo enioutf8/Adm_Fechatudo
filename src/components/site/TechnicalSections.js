@@ -11,7 +11,7 @@ import Urlmaster from "../../api/urlMaster";
 const TechnicalSections = ({ token }) => {
   const { timed, setTimed, productEdit } = useContext(GlobalContext);
   const url = new Urlmaster();
-  const urlServidor = "/";
+  const urlServidor = "/auth/";
 
   const [titleMainFeatures, setTitleMainFeatures] = useState("");
   const [valueMainFeatures, setValueMainFeatures] = useState("");

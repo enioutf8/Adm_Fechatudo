@@ -8,7 +8,7 @@ const SubCategoryLayout = ({token}) => {
   const api = new Category();
   const urlmaster = new Urlmaster();
   const [layoutSubCategories, setLayoutSubCategories] = useState([]);
-  const url = "";
+  const url = "/auth/";
 
   // Estados
   const [categorias, setCategorias] = useState([]);
