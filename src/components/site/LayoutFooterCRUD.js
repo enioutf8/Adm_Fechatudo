@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 
 export default function LayoutFooterCRUD() {
-  const API = "http://191.252.103.153:3000/api/layout-footer";
+  const API = "/api/layout-footer";
 
   const [footerList, setFooterList] = useState([]);
   const [loading, setLoading] = useState(true);

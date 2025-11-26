@@ -10,7 +10,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.get(
-        `http://191.252.103.153:3000/cliente/orders-pendent-adm`,
+        `/cliente/orders-pendent-adm`,
         token
       );
 
@@ -23,7 +23,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.get(
-        `http://191.252.103.153:3000/cliente/orders-finished-adm`,
+        `/cliente/orders-finished-adm`,
         token
       );
 
@@ -36,7 +36,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.put(
-        `http://191.252.103.153:3000/cliente/orders/${data.id_order}`,
+        `/cliente/orders/${data.id_order}`,
         data,
         token
       );

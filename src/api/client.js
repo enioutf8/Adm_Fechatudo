@@ -9,7 +9,7 @@ export default class Clients extends Urlmaster {
   findAllClients = async (token) => {
     try {
       const response = await axios.get(
-        `http://191.252.103.153:3000/cliente/client`,
+        `/cliente/client`,
         token
       );
 

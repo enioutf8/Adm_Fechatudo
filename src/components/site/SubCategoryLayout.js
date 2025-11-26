@@ -8,7 +8,7 @@ const SubCategoryLayout = ({token}) => {
   const api = new Category();
   const urlmaster = new Urlmaster();
   const [layoutSubCategories, setLayoutSubCategories] = useState([]);
-  const url = "http://191.252.103.153:3000";
+  const url = "";
 
   // Estados
   const [categorias, setCategorias] = useState([]);
@@ -113,8 +113,8 @@ const SubCategoryLayout = ({token}) => {
 
     try {
       const urlApi = form.id_layout
-        ? "http://191.252.103.153:3000/api/layout-subcategory/update"
-        : "http://191.252.103.153:3000/api/layout-subcategory";
+        ? "/api/layout-subcategory/update"
+        : "/api/layout-subcategory";
 
       await axios.post(urlApi, form);
 
@@ -180,7 +180,7 @@ const SubCategoryLayout = ({token}) => {
   const loadLayoutSubCategories = async () => {
     try {
       const response = await axios.get(
-        "http://191.252.103.153:3000/api/layout-subcategory"
+        "/api/layout-subcategory"
       );
 
       const lista = response.data.data || [];

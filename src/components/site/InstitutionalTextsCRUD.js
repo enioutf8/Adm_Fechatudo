@@ -11,8 +11,8 @@ import {
 } from "react-bootstrap";
 
 export default function InstitutionalTextsCRUD() {
-  const API_GET = "http://191.252.103.153:3000/api/texts-institutional";
-  const API_BASE = "http://191.252.103.153:3000/api/texts-institutional";
+  const API_GET = "/api/texts-institutional";
+  const API_BASE = "/api/texts-institutional";
 
   const [texts, setTexts] = useState([]);
   const [loading, setLoading] = useState(true);
