@@ -89,7 +89,7 @@ export default function OrderList({ token }) {
             </tr>
           </thead>
           <tbody>
-            {orderApi.map((order) => (
+            {orderApi?.map((order) => (
               <tr key={order.id_order}>
                 <td>#{order.id_order}</td>
                 <td>{order.clients?.Name.split(" ").slice(0, 2).join(" ")}</td>

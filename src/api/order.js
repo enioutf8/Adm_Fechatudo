@@ -10,7 +10,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.get(
-        `/cliente/orders-pendent-adm`,
+        `/api/cliente/orders-pendent-adm`,
         token
       );
 
@@ -23,7 +23,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.get(
-        `/cliente/orders-finished-adm`,
+        `/api/cliente/orders-finished-adm`,
         token
       );
 
@@ -36,7 +36,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.put(
-        `/cliente/orders/${data.id_order}`,
+        `/api/cliente/orders/${data.id_order}`,
         data,
         token
       );

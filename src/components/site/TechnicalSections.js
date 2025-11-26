@@ -11,7 +11,7 @@ import Urlmaster from "../../api/urlMaster";
 const TechnicalSections = ({ token }) => {
   const { timed, setTimed, productEdit } = useContext(GlobalContext);
   const url = new Urlmaster();
-  const urlServidor = "http://191.252.103.153:3000";
+  const urlServidor = "/";
 
   const [titleMainFeatures, setTitleMainFeatures] = useState("");
   const [valueMainFeatures, setValueMainFeatures] = useState("");
@@ -469,7 +469,7 @@ const TechnicalSections = ({ token }) => {
       } else {
         // ✅ Corrigido: o corpo do DELETE vai dentro de "data"
         const response = await axios.delete(
-          "http://191.252.103.153:3000/api/product-img",
+          "/api/product-img",
           {
             data: { Id_Product_Imgs: imgToDelete.Id_Product_Imgs },
             headers: {
