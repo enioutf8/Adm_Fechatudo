@@ -77,7 +77,7 @@ export const GlobalContextProvider = ({ children }) => {
         },
         {
           id: 53,
-          label: "Subcategorias Navegação",
+          label: "Subcategorias Navegaçãodfd",
           link: "/admin/layout/navegation",
         },
         {
