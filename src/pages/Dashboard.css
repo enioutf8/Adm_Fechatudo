@@ -1,0 +1,12 @@
+.dashboard {
+    height: 100% !important;
+    display: flex;
+}
+
+.dashboard .area-body {
+    padding: 8px;
+    height: 100% !important;
+    flex: 1;
+    
+    
+}

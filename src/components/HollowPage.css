@@ -1,0 +1,19 @@
+.hollow-page {
+    height: 100% !important;
+}
+
+.body-hollow-page {
+    overflow-y: scroll;
+
+    /* Esconder scrollbar para WebKit (Chrome, Safari, Edge) */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE 10+ */
+    padding: 10px 0px !important;
+}
+
+.body-hollow-page::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Edge */
+}

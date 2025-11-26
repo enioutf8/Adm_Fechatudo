@@ -1,0 +1,23 @@
+/* Seu arquivo CSS (ex: App.css ou MenuForm.css) */
+
+.full-height-container {
+    /* Define a altura do container principal (ex: toda a altura da tela) */
+    min-height: 85vh;
+    /* Adiciona um padding e gap para melhorar o espaçamento */
+    padding: 1.5rem;
+    gap: 1.5rem;
+}
+
+.scrollable-area {
+    /* Garante que o item flexível ocupe o espaço restante */
+    flex-grow: 1;
+    /* Define uma altura máxima (ajuste conforme a necessidade) */
+    max-height: 70vh;
+    /* Ativa a barra de rolagem vertical */
+    overflow-y: auto;
+    /* Opcional: Estilo visual */
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+}
+

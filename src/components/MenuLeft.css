@@ -1,0 +1,75 @@
+.logo-login-dashboard {
+    padding: 10px;
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+
+.logo-login-dashboard img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.left-menu-container {
+    width: 250px;
+    background: #f8f9fa;
+    border-right: 1px solid #ddd;
+    height: 100% !important;
+}
+
+.body-menus {}
+
+.left-menu-container ul {
+    list-style: none;
+    margin: 0;
+    padding-left: 10px;
+}
+
+.left-menu-container li {
+    margin: 4px 0;
+}
+
+.menu-item {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.menu-item:hover {
+    background: #e9ecef;
+}
+
+.has-sub .arrow {
+    font-size: 0.8em;
+    margin-left: 8px;
+    color: #555;
+}
+
+.left-menu-container ul ul {
+    margin-left: 12px;
+    border-left: 2px solid #ddd;
+    padding-left: 10px;
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-item.selected {
+    background: #363636;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.menu-item.selected svg {
+    color: #fff !important;
+}
