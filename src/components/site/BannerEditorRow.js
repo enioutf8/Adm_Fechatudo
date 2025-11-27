@@ -23,6 +23,15 @@ const BannerEditorRow = ({ token }) => {
   const [bannerURL, setBannerURL] = useState("");
   const [editBannerTitle, setEditBannerTitle] = useState("");
   const [editBannerURL, setEditBannerURL] = useState("");
+
+  //banner mobile
+  const [bannerMobileFile, setBannerMobileFile] = useState(null);
+  const [bannerMobileTitle, setBannerMobileTitle] = useState("");
+  const [bannerMobileURL, setMobileBannerURL] = useState("");
+  const [editBannerMobileTitle, setEditBannerMobileTitle] = useState("");
+  const [editBannerMobileURL, setEditBannerMobileURL] = useState("");
+  const [idBannerHome, setIdBannerHome] = useState(0);
+
   // Ref para o input de arquivo (um para cada banner)
   const fileInputRefs = useRef({});
 
@@ -75,10 +84,6 @@ const BannerEditorRow = ({ token }) => {
     formData.append("url", bannerURL);
     formData.append("alt", bannerTitle);
 
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
     await bannerHome.uploadBannerHome(formData, token);
     setTimedBannerHome(Date.now());
   };
@@ -91,64 +96,171 @@ const BannerEditorRow = ({ token }) => {
     );
   }
 
+  const handleSubmitBannerMobile = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("banner-home-mobile", bannerMobileFile); // nome correto
+    formData.append("url", bannerMobileURL);
+    formData.append("alt", bannerMobileTitle);
+    formData.append("id_archives", idBannerHome);
+
+    await bannerHome.uploadBannerHomemMobile(formData, token);
+    setTimedBannerHome(Date.now());
+  };
+
+  const handleBannerUploadMobile = (e) => {
+    setBannerMobileFile(e.target.files[0]);
+  };
+
+  const onChageIdBannerMobile = (value) => {
+    setIdBannerHome(value);
+  };
+
+  const handleDeleteBannerMobile = async (bannerId) => {
+    const id_mobile = { id_mobile: bannerId };
+    await bannerHome.deleteBannerHomeMobile(id_mobile);
+
+    setTimedBannerHome(Date.now());
+  };
+  const handleSaveBannerMobile = async (bannerId) => {
+    const dataUpdate = {
+      id_mobile: bannerId,
+      alt: editBannerMobileTitle,
+      url: editBannerMobileURL,
+    };
+
+    await bannerHome.editBannerHomeMobile(dataUpdate);
+    setTimedBannerHome(Date.now());
+  };
+
   return (
     <Container>
       <div className="  d-flex flex-column flex-lg-row  ">
         {/* 1. Área de Cadastro (Esquerda em Desktop) */}
-        <div
-          style={{ height: "max-content" }}
-          className="flex-grow-2   mb-4  p-3 border rounded bg-light "
-        >
-          <h5>Adicionar novo Banner</h5>
-          <hr />
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formFile" className="mb-4">
-              <Form.Label>
-                <FaImage /> Carregar <strong>Banner</strong>
-              </Form.Label>
+        <div>
+          <div
+            style={{ height: "max-content" }}
+            className="flex-grow-2   mb-4  p-3 border rounded bg-light "
+          >
+            <h5>Adicionar Banner Home</h5>
+            <hr />
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formFile" className="mb-4">
+                <Form.Label>
+                  <FaImage /> Carregar <strong>Banner</strong>
+                </Form.Label>
 
-              <Form.Control
-                type="text"
-                placeholder="Título do banner (alt)"
-                className="mb-2"
-                value={bannerTitle ?? ""} // garante string mesmo se undefined
-                onChange={(e) => setBannerTitle(e.target.value)}
-              />
+                <Form.Control
+                  type="text"
+                  placeholder="Título do banner (alt)"
+                  className="mb-2"
+                  value={bannerTitle ?? ""} // garante string mesmo se undefined
+                  onChange={(e) => setBannerTitle(e.target.value)}
+                />
 
-              <Form.Control
-                type="text"
-                placeholder="URL do banner"
-                className="mb-2"
-                value={bannerURL ?? ""} // idem
-                onChange={(e) => setBannerURL(e.target.value)}
-              />
+                <Form.Control
+                  type="text"
+                  placeholder="URL do banner"
+                  className="mb-2"
+                  value={bannerURL ?? ""} // idem
+                  onChange={(e) => setBannerURL(e.target.value)}
+                />
 
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handleBannerUpload}
-              />
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerUpload}
+                />
 
-              {logoFile && (
-                <div className="mt-2 p-2 border rounded">
-                  <p className="mb-1">{logoFile.name}</p>
-                  <img
-                    src={URL.createObjectURL(logoFile)}
-                    alt="Banner Preview"
-                    style={{ maxWidth: "100px", maxHeight: "100px" }}
-                  />
-                </div>
-              )}
-            </Form.Group>
+                {logoFile && (
+                  <div className="mt-2 p-2 border rounded">
+                    <p className="mb-1">{logoFile.name}</p>
+                    <img
+                      src={URL.createObjectURL(logoFile)}
+                      alt="Banner Preview"
+                      style={{ maxWidth: "100px", maxHeight: "100px" }}
+                    />
+                  </div>
+                )}
+              </Form.Group>
 
-            <Button
-              variant="warning"
-              type="submit"
-              className="w-100 mt-3 btn-lg"
-            >
-              Cadastrar Banner
-            </Button>
-          </Form>
+              <Button
+                variant="warning"
+                type="submit"
+                className="w-100 mt-3 btn-lg"
+              >
+                Cadastrar Banner
+              </Button>
+            </Form>
+          </div>
+
+          {/* 2. Área de Cadastro (Esquerda em Desktop) */}
+          <div
+            style={{ height: "max-content" }}
+            className="flex-grow-2   mb-4  p-3 border rounded bg-light "
+          >
+            <h5>Adicionar Banner Mobile</h5>
+            <hr />
+            <Form onSubmit={handleSubmitBannerMobile}>
+              <Form.Group controlId="formFile" className="mb-4">
+                <Form.Label>
+                  <FaImage /> Carregar <strong>Banner</strong>
+                </Form.Label>
+
+                <Form.Control
+                  type="text"
+                  placeholder="Título do banner (alt)"
+                  className="mb-2"
+                  value={bannerMobileTitle ?? ""} // garante string mesmo se undefined
+                  onChange={(e) => setBannerMobileTitle(e.target.value)}
+                />
+
+                <Form.Control
+                  type="text"
+                  placeholder="URL do banner"
+                  className="mb-2"
+                  value={bannerMobileURL ?? ""} // idem
+                  onChange={(e) => setMobileBannerURL(e.target.value)}
+                />
+
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerUploadMobile}
+                />
+                <select
+                  className="mt-3 form-control"
+                  onChange={(e) => onChageIdBannerMobile(e.target.value)}
+                >
+                  {allBannerHome.map((bner) => (
+                    <option key={bner.id_archives} value={bner.id_archives}>
+                      {bner.alt}
+                    </option>
+                  ))}
+                </select>
+
+                {bannerMobileFile && (
+                  <div className="mt-2 p-2 border rounded">
+                    <p className="mb-1">{bannerMobileFile.name}</p>
+                    <img
+                      src={URL.createObjectURL(bannerMobileFile)}
+                      alt="Banner Preview"
+                      style={{ maxWidth: "100px", maxHeight: "100px" }}
+                    />
+                  </div>
+                )}
+              </Form.Group>
+
+              <Button
+                variant="warning"
+                type="submit"
+                className="w-100 mt-3 btn-lg"
+              >
+                Cadastrar Banner
+              </Button>
+            </Form>
+          </div>
         </div>
 
         {/* 2. Área de Edição/Itens Existentes (Direita em Desktop) */}
@@ -156,63 +268,143 @@ const BannerEditorRow = ({ token }) => {
           <div className="areaTotalBanner">
             <ul className="areaBanners">
               {allBannerHome.map((banner) => (
-                <li key={banner.id_archives} className="area-content">
-                  {/* Div da Imagem Clicável */}
-                  <div
-                    className="imgBannerThumbnail"
-                    style={{ cursor: "pointer", position: "relative" }} // Adiciona cursor para indicar clicável
-                  >
-                    <img
-                      src={
-                        banner.localImageUrl ||
-                        `${urlimgs.getUrlMaster().urlSite}${banner.archive}`
-                      }
-                      alt={banner.alt || "Banner"}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src =
-                          "https://via.placeholder.com/400x200?text=IMAGEM+NAO+ENCONTRADA";
-                      }} // Fallback
-                    />
-                    {/* Input de arquivo oculto */}
-                  </div>
+                <React.Fragment key={banner.id_archives}>
+                  <li className="area-content">
+                    {/* Div da Imagem Clicável */}
+                    <div
+                      className="imgBannerThumbnail"
+                      style={{ cursor: "pointer", position: "relative" }} // Adiciona cursor para indicar clicável
+                    >
+                      <img
+                        src={
+                          banner.localImageUrl ||
+                          `${urlimgs.getUrlMaster().urlSite}${banner.archive}`
+                        }
+                        alt={banner.alt || "Banner"}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://via.placeholder.com/400x200?text=IMAGEM+NAO+ENCONTRADA";
+                        }} // Fallback
+                      />
+                      {/* Input de arquivo oculto */}
+                    </div>
 
-                  <div className="contentBanner">
-                    <div className="contentListBanner-title">
-                      <input
-                        defaultValue={banner.alt}
-                        className="form-control"
-                        placeholder="Titulo da imagem"
-                        onChange={(e) => setEditBannerTitle(e.target.value)}
-                      />
+                    <div className="contentBanner">
+                      <div className="contentListBanner-title">
+                        <input
+                          defaultValue={banner.alt}
+                          className="form-control"
+                          placeholder="Titulo da imagem"
+                          onChange={(e) => setEditBannerTitle(e.target.value)}
+                        />
+                      </div>
+                      <div className="contentListBanner-link">
+                        <input
+                          className="form-control"
+                          defaultValue={banner.url}
+                          placeholder="Link da imagem"
+                          onChange={(e) => setEditBannerURL(e.target.value)}
+                        />
+                      </div>
+                      <div className="contentListBanner-actions">
+                        {" "}
+                        {/* Renomeado para clareza */}
+                        <button
+                          style={{ marginRight: "5px" }}
+                          className="btn btn-secondary"
+                          onClick={() => handleSaveBanner(banner.id_archives)} // Botão para salvar
+                        >
+                          <MdModeEdit />
+                        </button>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleDeleteBanner(banner.id_archives)} // Botão para deletar
+                        >
+                          <FaTrashAlt />
+                        </button>
+                      </div>
                     </div>
-                    <div className="contentListBanner-link">
-                      <input
-                        className="form-control"
-                        defaultValue={banner.url}
-                        placeholder="Link da imagem"
-                        onChange={(e) => setEditBannerURL(e.target.value)}
-                      />
-                    </div>
-                    <div className="contentListBanner-actions">
-                      {" "}
-                      {/* Renomeado para clareza */}
-                      <button
-                        style={{ marginRight: "5px" }}
-                        className="btn btn-secondary"
-                        onClick={() => handleSaveBanner(banner.id_archives)} // Botão para salvar
+                  </li>
+
+                  {banner.archives_mobile &&
+                  Object.keys(banner.archives_mobile).length !== 0 ? (
+                    <li
+                      key={banner?.archives_mobile?.id_mobile}
+                      className="area-content banner-mobile"
+                    >
+                      {/* Div da Imagem Clicável */}
+                      <div
+                        className="imgBannerThumbnail banner-mobile-img"
+                        style={{ cursor: "pointer", position: "relative" }} // Adiciona cursor para indicar clicável
                       >
-                        <MdModeEdit />
-                      </button>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => handleDeleteBanner(banner.id_archives)} // Botão para deletar
-                      >
-                        <FaTrashAlt />
-                      </button>
-                    </div>
-                  </div>
-                </li>
+                        <img
+                          src={`${urlimgs.getUrlMaster().urlSite}${
+                            banner?.archives_mobile?.archive_mobile
+                          }`}
+                          alt={banner.alt || "Banner"}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                              "https://via.placeholder.com/400x200?text=IMAGEM+NAO+ENCONTRADA";
+                          }} // Fallback
+                        />
+                        {/* Input de arquivo oculto */}
+                      </div>
+
+                      <div className="contentBanner">
+                        <div className="contentListBanner-title">
+                          <input
+                            defaultValue={banner?.archives_mobile?.alt}
+                            className="form-control"
+                            placeholder="Titulo da imagem"
+                            onChange={(e) =>
+                              setEditBannerMobileTitle(e.target.value)
+                            }
+                          />
+                        </div>
+                        <div className="contentListBanner-link">
+                          <input
+                            className="form-control"
+                            defaultValue={banner?.archives_mobile?.url}
+                            placeholder="Link da imagem"
+                            onChange={(e) =>
+                              setEditBannerMobileURL(e.target.value)
+                            }
+                          />
+                        </div>
+                        <div className="contentListBanner-actions">
+                          {" "}
+                          {/* Renomeado para clareza */}
+                          <button
+                            style={{ marginRight: "5px" }}
+                            className="btn btn-secondary"
+                            onClick={() =>
+                              handleSaveBannerMobile(
+                                banner?.archives_mobile?.id_mobile
+                              )
+                            } // Botão para salvar
+                          >
+                            <MdModeEdit />
+                          </button>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() =>
+                              handleDeleteBannerMobile(
+                                banner?.archives_mobile?.id_mobile
+                              )
+                            } // Botão para deletar
+                          >
+                            <FaTrashAlt />
+                          </button>
+                        </div>
+                      </div>
+                    </li>
+                  ) : (
+                    <></>
+                  )}
+                  <hr></hr>
+                </React.Fragment>
               ))}
             </ul>
           </div>

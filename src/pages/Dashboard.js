@@ -14,10 +14,9 @@ const Dashboard = () => {
   const [token] = useState(localStorage.getItem("tokenCompany"));
   let axiosConfig = { headers: { Authorization: "Bearer " + token } };
 
-  // 🔥 VERIFICA LOGIN AQUI
   useEffect(() => {
     if (!token) {
-      window.location.href = "/"; // redireciona para login
+      window.location.href = "/";
     }
   }, [token]);
 
@@ -31,7 +30,6 @@ const Dashboard = () => {
     }
   };
 
-  // Evita renderizar antes do token existir
   if (!token) return null;
 
   return (

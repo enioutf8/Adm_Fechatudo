@@ -68,4 +68,50 @@ export default class Bannerhome extends Urlmaster {
       throw new Error("Falha ao deletar menus da navbar");
     }
   };
+  // MOBILE
+  uploadBannerHomemMobile = async (formData, token) => {
+    try {
+      const response = await axios.post(
+        `${this.getUrlMaster().urlApi}banner-home-mobile`,
+        formData, // aqui usamos o formData recebido por parâmetro
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("✅ Banner enviado com sucesso:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("❌ Erro ao enviar banner:", error);
+    }
+  };
+  deleteBannerHomeMobile = async (data, token) => {
+    try {
+      const response = await axios.delete(
+        `${this.getUrlMaster().urlApi}banner-home-mobile`,
+        {
+          data,
+        }
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao deletar menus da navbar:", error);
+      throw new Error("Falha ao deletar menus da navbar");
+    }
+  };
+  editBannerHomeMobile = async (data, token) => {
+    try {
+      const response = await axios.put(
+        `${this.getUrlMaster().urlApi}banner-home-mobile`,
+        data
+      );
+
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao deletar menus da navbar:", error);
+      throw new Error("Falha ao deletar menus da navbar");
+    }
+  };
 }

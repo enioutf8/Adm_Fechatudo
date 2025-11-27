@@ -9,7 +9,7 @@ export default class Clients extends Urlmaster {
   findAllClients = async (token) => {
     try {
       const response = await axios.get(
-        `/auth/cliente/client`,
+        `${this.getUrlMaster().urlSite}cliente/client`,
         token
       );
 

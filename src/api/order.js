@@ -7,10 +7,10 @@ export default class Orders extends Urlmaster {
   }
 
   findOrdersPendent = async (token) => {
-    console.log(token);
+  
     try {
       const response = await axios.get(
-        `/auth/cliente/orders-pendent-adm`,
+        `${this.getUrlMaster().urlSite}cliente/orders-pendent-adm`,
         token
       );
 
@@ -23,7 +23,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.get(
-        `/auth/cliente/orders-finished-adm`,
+        `${this.getUrlMaster().urlSite}cliente/orders-finished-adm`,
         token
       );
 
@@ -36,7 +36,7 @@ export default class Orders extends Urlmaster {
     console.log(token);
     try {
       const response = await axios.put(
-        `/auth/cliente/orders/${data.id_order}`,
+        `${this.getUrlMaster().urlSite}cliente/orders/${data.id_order}`,
         data,
         token
       );

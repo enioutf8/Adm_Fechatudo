@@ -11,7 +11,7 @@ const LayoutSite = ({ submenu, token }) => {
   return (
     <HollowPage>
       {submenu === "Menu e Navegação" && <FormMenus token={token} />}
-      {submenu === "Banner home" && <BannerEditorRow token={token} />}
+      {submenu === "Banners" && <BannerEditorRow token={token} />}
       {submenu === "Sub Categorias" && <SubCategoryItemLayout token={token} />}
       {submenu === "Subcategorias Navegação" && (
         <SubCategoryLayout token={token} />

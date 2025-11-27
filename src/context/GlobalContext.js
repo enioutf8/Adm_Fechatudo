@@ -72,7 +72,7 @@ export const GlobalContextProvider = ({ children }) => {
         { id: 52, label: "Menu e Navegação", link: "/admin/layout/menu" },
         {
           id: 51,
-          label: "Banner home",
+          label: "Banners",
           link: "/admin/layout/banners",
         },
 
