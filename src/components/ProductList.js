@@ -43,12 +43,12 @@ const ProductList = ({token}) => {
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [product, setProduct] = useState({});
-  const url = new Urlmaster();
+  const urlMaster = new Urlmaster();
   // 🔹 Buscar produtos
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        `${url.getUrlMaster().urlApi}product-all-adm`,
+        `${urlMaster.getUrlMaster().urlApi}product-all-adm`,
         token
       );
 
@@ -63,7 +63,7 @@ const ProductList = ({token}) => {
     console.log(id);
     if (window.confirm("Tem certeza que deseja excluir este produto?")) {
       try {
-        await axios.delete(`${url.getUrlMaster().urlApi}product/${id}`, token);
+        await axios.delete(`${urlMaster.getUrlMaster().urlApi}product/${id}`, token);
         // Atualiza a lista removendo o produto excluído
         setProducts(products.filter((p) => p.Product_ID !== id));
       } catch (error) {
@@ -74,7 +74,7 @@ const ProductList = ({token}) => {
 
   // 🔹 Visualizar produto
   const handleView = (product) => {
-    const urlSite = `http://191.252.103.153:3000/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    const urlSite = `${urlMaster.getUrlMaster().urlSite}produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
     window.open(urlSite, "_blank"); // abre em nova aba
   };
 

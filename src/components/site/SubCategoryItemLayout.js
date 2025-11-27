@@ -58,15 +58,13 @@ const SubCategoryItemLayout = ({ token }) => {
       setSuccess(false);
 
       // 🔹 Aqui faz o envio para tua API
-      const response = await axios.post(
+      await axios.post(
         `${
           process.env.REACT_APP_API_URL || url.getUrlMaster().urlApi
         }/subcategory`,
         formData,
         token
       );
-
-      console.log("✅ Dados enviados:", response.data);
 
       setSuccess(true);
       setFormData({

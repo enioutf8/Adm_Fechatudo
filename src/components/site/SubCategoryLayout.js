@@ -4,11 +4,11 @@ import Category from "../../api/categoryAndSubCategory";
 import axios from "axios";
 import Urlmaster from "../../api/urlMaster";
 
-const SubCategoryLayout = ({token}) => {
+const SubCategoryLayout = ({ token }) => {
   const api = new Category();
   const urlmaster = new Urlmaster();
   const [layoutSubCategories, setLayoutSubCategories] = useState([]);
-  const url = "/auth/";
+  const url = `${urlmaster.getUrlMaster().urlSite}`;
 
   // Estados
   const [categorias, setCategorias] = useState([]);
@@ -113,8 +113,8 @@ const SubCategoryLayout = ({token}) => {
 
     try {
       const urlApi = form.id_layout
-        ? "/api/layout-subcategory/update"
-        : "/api/layout-subcategory";
+        ? `${urlmaster.getUrlMaster().urlApi}layout-subcategory/update`
+        : `${urlmaster.getUrlMaster().urlApi}layout-subcategory`;
 
       await axios.post(urlApi, form);
 
@@ -179,9 +179,7 @@ const SubCategoryLayout = ({token}) => {
   // ===========================
   const loadLayoutSubCategories = async () => {
     try {
-      const response = await axios.get(
-        "/api/layout-subcategory"
-      );
+      const response = await axios.get( `${urlmaster.getUrlMaster().urlApi}layout-subcategory`);
 
       const lista = response.data.data || [];
       setLayoutSubCategories(lista);
@@ -240,9 +238,7 @@ const SubCategoryLayout = ({token}) => {
       icon_file: file, // salvamos o arquivo no estado
     }));
   };
-
-  console.log(editSub);
-
+ 
   return (
     <div className="container mt-4">
       <h3 className="mb-3">Configurar Subcategoria</h3>

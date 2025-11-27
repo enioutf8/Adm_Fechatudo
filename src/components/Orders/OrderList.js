@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, Card } from "react-bootstrap";
 import Orders from "../../api/order";
+import Urlmaster from "../../api/urlMaster";
 import "./OrderList.css";
 export default function OrderList({ token }) {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -8,14 +9,13 @@ export default function OrderList({ token }) {
   const [orderApi, setOrderApi] = useState([]);
   const [timed, setTimed] = useState(Date.now());
   const allOrders = new Orders();
+  const urlMaster = new Urlmaster()
 
   useEffect(() => {
     const showOrdersPendent = async () => {
       const response = await allOrders.findOrdersPendent(token);
- 
       const correctedOrders = response.map((order) => ({
         ...order,
-       
         buy_cart:
           typeof order.buy_cart === "string"
             ? JSON.parse(order.buy_cart || "[]")
@@ -46,8 +46,8 @@ export default function OrderList({ token }) {
   };
 
   const handleView = (product) => {
-    const urlSite = `http://191.252.103.153:3000/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
-    window.open(urlSite, "_blank"); // abre em nova aba
+    const urlSite = `${urlMaster.getUrlMaster().urlSite}produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    window.open(urlSite, "_blank"); 
   };
 
   const finishedOrder = async (order) => {
@@ -80,8 +80,7 @@ export default function OrderList({ token }) {
 
     return phone; // fallback caso não bata o tamanho
   }
-
-  console.log(selectedOrder);
+ 
 
   return (
     <div className="container py-4">

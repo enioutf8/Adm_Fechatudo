@@ -10,8 +10,8 @@ import Urlmaster from "../../api/urlMaster";
 
 const TechnicalSections = ({ token }) => {
   const { timed, setTimed, productEdit } = useContext(GlobalContext);
-  const url = new Urlmaster();
-  const urlServidor = "/auth/";
+  const urlMaster = new Urlmaster();
+  const urlServidor = `${urlMaster.getUrlMaster().urlSite}`;
 
   const [titleMainFeatures, setTitleMainFeatures] = useState("");
   const [valueMainFeatures, setValueMainFeatures] = useState("");
@@ -25,7 +25,7 @@ const TechnicalSections = ({ token }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [listImages, setListImages] = useState([]);
 
-  const [selectedColor, setSelectedColor] = useState("#000000");
+  const [selectedColor, setSelectedColor] = useState("#ffffffff");
   const [listColors, setListColors] = useState([]);
   const [colorName, setColorName] = useState("");
 
@@ -343,7 +343,9 @@ const TechnicalSections = ({ token }) => {
       if (!mainFacture) return;
 
       if (mainFacture.Main_Feature_ID) {
-        const url = `/api/main-factures/${mainFacture.Main_Feature_ID}`;
+        const url = `${urlMaster.getUrlMaster().urlApi}main-factures/${
+          mainFacture.Main_Feature_ID
+        }`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {
@@ -402,7 +404,9 @@ const TechnicalSections = ({ token }) => {
 
       // 🔹 Se o item tiver ID, remove no backend
       if (itemAdditional.Included_Item_ID) {
-        const url = `/api/included-items/${itemAdditional.Included_Item_ID}`;
+        const url = `${urlMaster.getUrlMaster().urlApi}included-items/${
+          itemAdditional.Included_Item_ID
+        }`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {
@@ -411,7 +415,7 @@ const TechnicalSections = ({ token }) => {
           return;
         }
       } else {
-        console.warn(
+        console.log(
           "Item sem Included_Item_ID — removendo apenas localmente.",
           itemAdditional
         );
@@ -469,7 +473,7 @@ const TechnicalSections = ({ token }) => {
       } else {
         // ✅ Corrigido: o corpo do DELETE vai dentro de "data"
         const response = await axios.delete(
-          "/api/product-img",
+          `${urlMaster.getUrlMaster().urlApi}product-img`,
           {
             data: { Id_Product_Imgs: imgToDelete.Id_Product_Imgs },
             headers: {
@@ -512,7 +516,7 @@ const TechnicalSections = ({ token }) => {
 
       // 🔹 Se o item tiver ID, remove no backend
       if (itemAdditional.Id_Item_additional) {
-        const url = `/api/item-additional/${itemAdditional.Id_Item_additional}`;
+        const url = `${urlMaster.getUrlMaster().urlApi}item-additional/${itemAdditional.Id_Item_additional}`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {

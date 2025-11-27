@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Urlmaster from "../../api/urlMaster";
 import axios from "axios";
 import {
   Container,
@@ -11,7 +12,8 @@ import {
 } from "react-bootstrap";
 
 export default function LayoutFooterCRUD() {
-  const API = "/api/layout-footer";
+  const urlMaster = new Urlmaster();
+  const API = `${urlMaster.getUrlMaster().urlApi}layout-footer`;
 
   const [footerList, setFooterList] = useState([]);
   const [loading, setLoading] = useState(true);

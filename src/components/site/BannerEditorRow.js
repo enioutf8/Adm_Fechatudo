@@ -57,7 +57,6 @@ const BannerEditorRow = ({ token }) => {
   };
 
   const handleDeleteBanner = async (bannerId) => {
-    console.log(bannerId);
     const idDelete = { id_archives: bannerId };
     await bannerHome.deleteBannerHome(idDelete);
     setTimedBannerHome(Date.now());

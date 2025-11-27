@@ -25,7 +25,6 @@ export default function BrandForm({ token }) {
   }, [timed]);
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
     setForm((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -41,7 +40,7 @@ export default function BrandForm({ token }) {
       img_path: "",
       url_direction: "",
       target_blank: false,
-      color_cell: "#000000",
+      color_cell: "#ffffffff",
     });
     setTimed(Date.now());
   };

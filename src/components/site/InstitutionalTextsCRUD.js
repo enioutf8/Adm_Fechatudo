@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Urlmaster from "../../api/urlMaster";
 import axios from "axios";
 import {
   Container,
@@ -11,8 +12,9 @@ import {
 } from "react-bootstrap";
 
 export default function InstitutionalTextsCRUD() {
-  const API_GET = "/api/texts-institutional";
-  const API_BASE = "/api/texts-institutional";
+  const urlMaster = new Urlmaster();
+  const API_GET = `${urlMaster.getUrlMaster().urlApi}texts-institutional`;
+  const API_BASE = `${urlMaster.getUrlMaster().urlApi}texts-institutional`;
 
   const [texts, setTexts] = useState([]);
   const [loading, setLoading] = useState(true);

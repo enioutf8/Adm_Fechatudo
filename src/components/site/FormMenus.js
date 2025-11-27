@@ -1,7 +1,6 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import { FaTrash } from "react-icons/fa";
-import { FaImage } from "react-icons/fa";
 import {
   Form,
   Button,
@@ -11,12 +10,9 @@ import {
 } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-// Importe seu arquivo CSS aqui se ele não for globalmente importado
-// Certifique-se de que a classe 'scrollable-area' e 'full-height-container' estão definidas no seu CSS
 import "./FormMenus.css";
 import MenusNavBar from "../../api/menuNavbar";
 
-// Objeto de menus padrão simulando uma requisição de dados existentes
 const defaultMenus = [
   {
     id: 1,
@@ -83,8 +79,8 @@ const FormMenus = ({ token }) => {
     };
 
     nas();
-  }, [timedMenusNavBar]); // ✅ roda só uma vez
-  // NOVO ESTADO: Controla qual submenu está sendo editado
+  }, [timedMenusNavBar]);  
+   
   const [editingSubitem, setEditingSubitem] = useState({
     menuId: null,
     oldName: null,
@@ -129,7 +125,6 @@ const FormMenus = ({ token }) => {
       })),
     };
 
-    console.log(transformedMenu);
     await navBarApi.editMenusNavbar(transformedMenu, token);
     setTimedMenusNavBar(Date.now());
     setNewMenuName("");
