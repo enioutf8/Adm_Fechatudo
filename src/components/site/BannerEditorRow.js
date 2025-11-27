@@ -34,6 +34,11 @@ const BannerEditorRow = ({ token }) => {
 
   // Ref para o input de arquivo (um para cada banner)
   const fileInputRefs = useRef({});
+  useEffect(() => {
+    if (allBannerHome.length > 0) {
+      setIdBannerHome(allBannerHome[0].id_archives);
+    }
+  }, [allBannerHome]);
 
   useEffect(() => {
     const fetchBanners = async () => {
@@ -54,11 +59,11 @@ const BannerEditorRow = ({ token }) => {
     fetchBanners();
   }, [timedBannerHome]);
 
-  const handleSaveBanner = async (bannerId) => {
+  const handleSaveBanner = async (bannerId, banner) => {
     const dataUpdate = {
       id_archives: bannerId,
-      alt: editBannerTitle,
-      url: editBannerURL,
+      alt: editBannerTitle.length === 0 ? banner.alt : editBannerTitle,
+      url: editBannerURL.length === 0 ? banner.url : editBannerURL,
     };
 
     await bannerHome.editBannerHome(dataUpdate);
@@ -78,31 +83,33 @@ const BannerEditorRow = ({ token }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Cria o objeto FormData para enviar dados multipart/form-data
     const formData = new FormData();
-    formData.append("banner-home", logoFile); // nome do campo igual ao da imagem
-    formData.append("url", bannerURL);
-    formData.append("alt", bannerTitle);
+
+    if (logoFile) {
+      formData.append("banner-home", logoFile);
+    }
+    if (bannerURL && bannerURL.trim() !== "") {
+      formData.append("url", bannerURL);
+    }
+    if (bannerTitle && bannerTitle.trim() !== "") {
+      formData.append("alt", bannerTitle);
+    }
 
     await bannerHome.uploadBannerHome(formData, token);
     setTimedBannerHome(Date.now());
   };
 
-  if (allBannerHome.length === 0) {
-    return (
-      <div className="areaTotalBanner">
-        <p>Nenhum banner encontrado ou carregando...</p>
-      </div>
-    );
-  }
-
   const handleSubmitBannerMobile = async (e) => {
     e.preventDefault();
 
+    const result = allBannerHome.find(
+      (item) => item.id_archives === idBannerHome
+    );
+
     const formData = new FormData();
     formData.append("banner-home-mobile", bannerMobileFile); // nome correto
-    formData.append("url", bannerMobileURL);
-    formData.append("alt", bannerMobileTitle);
+    formData.append("url", result.url);
+    formData.append("alt", result.alt);
     formData.append("id_archives", idBannerHome);
 
     await bannerHome.uploadBannerHomemMobile(formData, token);
@@ -123,16 +130,23 @@ const BannerEditorRow = ({ token }) => {
 
     setTimedBannerHome(Date.now());
   };
-  const handleSaveBannerMobile = async (bannerId) => {
+  const handleSaveBannerMobile = async (bannerId, banner) => {
     const dataUpdate = {
       id_mobile: bannerId,
-      alt: editBannerMobileTitle,
-      url: editBannerMobileURL,
+      alt: banner.alt,
+      url: banner.url,
     };
 
     await bannerHome.editBannerHomeMobile(dataUpdate);
     setTimedBannerHome(Date.now());
   };
+  if (allBannerHome.length === 0) {
+    return (
+      <div className="areaTotalBanner">
+        <p>Nenhum banner encontrado ou carregando...</p>
+      </div>
+    );
+  }
 
   return (
     <Container>
@@ -209,28 +223,14 @@ const BannerEditorRow = ({ token }) => {
                 </Form.Label>
 
                 <Form.Control
-                  type="text"
-                  placeholder="Título do banner (alt)"
-                  className="mb-2"
-                  value={bannerMobileTitle ?? ""} // garante string mesmo se undefined
-                  onChange={(e) => setBannerMobileTitle(e.target.value)}
-                />
-
-                <Form.Control
-                  type="text"
-                  placeholder="URL do banner"
-                  className="mb-2"
-                  value={bannerMobileURL ?? ""} // idem
-                  onChange={(e) => setMobileBannerURL(e.target.value)}
-                />
-
-                <Form.Control
                   type="file"
                   accept="image/*"
                   onChange={handleBannerUploadMobile}
                 />
+
                 <select
                   className="mt-3 form-control"
+                  value={idBannerHome} // <<--- Aqui!
                   onChange={(e) => onChageIdBannerMobile(e.target.value)}
                 >
                   {allBannerHome.map((bner) => (
@@ -307,13 +307,16 @@ const BannerEditorRow = ({ token }) => {
                           onChange={(e) => setEditBannerURL(e.target.value)}
                         />
                       </div>
+
                       <div className="contentListBanner-actions">
                         {" "}
                         {/* Renomeado para clareza */}
                         <button
                           style={{ marginRight: "5px" }}
                           className="btn btn-secondary"
-                          onClick={() => handleSaveBanner(banner.id_archives)} // Botão para salvar
+                          onClick={() =>
+                            handleSaveBanner(banner.id_archives, banner)
+                          } // Botão para salvar
                         >
                           <MdModeEdit />
                         </button>
@@ -358,6 +361,7 @@ const BannerEditorRow = ({ token }) => {
                             defaultValue={banner?.archives_mobile?.alt}
                             className="form-control"
                             placeholder="Titulo da imagem"
+                            disabled
                             onChange={(e) =>
                               setEditBannerMobileTitle(e.target.value)
                             }
@@ -368,6 +372,7 @@ const BannerEditorRow = ({ token }) => {
                             className="form-control"
                             defaultValue={banner?.archives_mobile?.url}
                             placeholder="Link da imagem"
+                            disabled
                             onChange={(e) =>
                               setEditBannerMobileURL(e.target.value)
                             }
@@ -376,17 +381,6 @@ const BannerEditorRow = ({ token }) => {
                         <div className="contentListBanner-actions">
                           {" "}
                           {/* Renomeado para clareza */}
-                          <button
-                            style={{ marginRight: "5px" }}
-                            className="btn btn-secondary"
-                            onClick={() =>
-                              handleSaveBannerMobile(
-                                banner?.archives_mobile?.id_mobile
-                              )
-                            } // Botão para salvar
-                          >
-                            <MdModeEdit />
-                          </button>
                           <button
                             className="btn btn-danger"
                             onClick={() =>
