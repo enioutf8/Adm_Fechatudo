@@ -12,6 +12,7 @@ import {
 import Clients from "../../api/client";
 import "../Orders/OrderList.css";
 export default function ClientList({ token }) {
+  const customURL = 'http://191.252.103.153:3000/'
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [show, setShow] = useState(false);
   const [orderApi, setOrderApi] = useState([]);
@@ -57,7 +58,7 @@ export default function ClientList({ token }) {
   };
 
   const handleView = (product) => {
-    const urlSite = `http://191.252.103.153:3000/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    const urlSite = `${customURL}produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
     window.open(urlSite, "_blank"); // abre em nova aba
   };
 
