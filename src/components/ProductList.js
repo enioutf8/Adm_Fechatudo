@@ -37,7 +37,7 @@ const mobileTableStyles = `
 }
 `;
 
-const ProductList = ({token}) => {
+const ProductList = ({ token }) => {
   const { productEdit, setProductEdit } = useContext(GlobalContext);
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -63,7 +63,10 @@ const ProductList = ({token}) => {
     console.log(id);
     if (window.confirm("Tem certeza que deseja excluir este produto?")) {
       try {
-        await axios.delete(`${urlMaster.getUrlMaster().urlApi}product/${id}`, token);
+        await axios.delete(
+          `${urlMaster.getUrlMaster().urlApi}product/${id}`,
+          token
+        );
         // Atualiza a lista removendo o produto excluído
         setProducts(products.filter((p) => p.Product_ID !== id));
       } catch (error) {
@@ -74,7 +77,7 @@ const ProductList = ({token}) => {
 
   // 🔹 Visualizar produto
   const handleView = (product) => {
-    const urlSite = `${urlMaster.getUrlMaster().urlSite}produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    const urlSite = `http://191.252.103.153/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
     window.open(urlSite, "_blank"); // abre em nova aba
   };
 
