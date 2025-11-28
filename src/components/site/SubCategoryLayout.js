@@ -13,6 +13,7 @@ const SubCategoryLayout = ({ token }) => {
   // Estados
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [timed, setTimed] = useState(Date.now());
 
   const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
   const [subCategoriasFiltradas, setSubCategoriasFiltradas] = useState([]);
@@ -51,7 +52,7 @@ const SubCategoryLayout = ({ token }) => {
 
   useEffect(() => {
     loadCategories();
-  }, []);
+  }, [timed]);
 
   // ===============================================================
   // FUNÇÃO NOVA — TROCAR CATEGORIA PROGRAMATICAMENTE (EDIT MODE)
@@ -117,7 +118,7 @@ const SubCategoryLayout = ({ token }) => {
         : `${urlmaster.getUrlMaster().urlApi}layout-subcategory`;
 
       await axios.post(urlApi, form);
-
+      setTimed(Date.now());
       alert("Salvo com sucesso!");
       loadLayoutSubCategories();
 
@@ -152,7 +153,7 @@ const SubCategoryLayout = ({ token }) => {
           form.id_layout_subcategories
         );
         formData.append("icon", form.icon_file);
-
+        setTimed(Date.now());
         await api.updateSubCategoryIMG(formData);
       }
 
@@ -182,7 +183,7 @@ const SubCategoryLayout = ({ token }) => {
       const response = await axios.get(
         `${urlmaster.getUrlMaster().urlApi}layout-subcategory`
       );
-
+      setTimed(Date.now());
       const lista = response.data.data || [];
       setLayoutSubCategories(lista);
     } catch (error) {
@@ -192,7 +193,7 @@ const SubCategoryLayout = ({ token }) => {
 
   useEffect(() => {
     loadLayoutSubCategories();
-  }, []);
+  }, [timed]);
 
   // ===========================
   // EDITAR ITEM
