@@ -183,7 +183,7 @@ const SubCategoryLayout = ({ token }) => {
       const response = await axios.get(
         `${urlmaster.getUrlMaster().urlApi}layout-subcategory`
       );
-      setTimed(Date.now());
+      
       const lista = response.data.data || [];
       setLayoutSubCategories(lista);
     } catch (error) {
