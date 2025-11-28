@@ -153,7 +153,7 @@ const SubCategoryLayout = ({ token }) => {
           form.id_layout_subcategories
         );
         formData.append("icon", form.icon_file);
-        setTimed(Date.now());
+
         await api.updateSubCategoryIMG(formData);
       }
 
@@ -165,7 +165,7 @@ const SubCategoryLayout = ({ token }) => {
         url_direction: "",
         target_blank: false,
       });
-
+      setTimed(Date.now());
       setCategoriaSelecionada("");
       setSubCategoriasFiltradas([]);
       setEditSub(false);
@@ -183,7 +183,7 @@ const SubCategoryLayout = ({ token }) => {
       const response = await axios.get(
         `${urlmaster.getUrlMaster().urlApi}layout-subcategory`
       );
-      
+
       const lista = response.data.data || [];
       setLayoutSubCategories(lista);
     } catch (error) {
