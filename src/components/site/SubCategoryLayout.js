@@ -141,8 +141,8 @@ const SubCategoryLayout = ({ token }) => {
     e.preventDefault();
 
     try {
-      // Atualiza os dados de texto primeiro
-      await api.updateSubCategory(form);
+      console.log("AQUI");
+      await api.updateSubCategoryLayout(form);
 
       // Se tiver imagem, envia o upload
       if (form.icon_file) {
@@ -179,7 +179,9 @@ const SubCategoryLayout = ({ token }) => {
   // ===========================
   const loadLayoutSubCategories = async () => {
     try {
-      const response = await axios.get( `${urlmaster.getUrlMaster().urlApi}layout-subcategory`);
+      const response = await axios.get(
+        `${urlmaster.getUrlMaster().urlApi}layout-subcategory`
+      );
 
       const lista = response.data.data || [];
       setLayoutSubCategories(lista);
@@ -197,6 +199,7 @@ const SubCategoryLayout = ({ token }) => {
   // ===========================
   const handleEdit = (item) => {
     setEditSub(true);
+
     const sub = item.sub_category;
     if (!sub) return;
 
@@ -238,7 +241,7 @@ const SubCategoryLayout = ({ token }) => {
       icon_file: file, // salvamos o arquivo no estado
     }));
   };
- 
+
   return (
     <div className="container mt-4">
       <h3 className="mb-3">Configurar Subcategoria</h3>

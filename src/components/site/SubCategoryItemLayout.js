@@ -59,9 +59,7 @@ const SubCategoryItemLayout = ({ token }) => {
 
       // 🔹 Aqui faz o envio para tua API
       await axios.post(
-        `${
-          process.env.REACT_APP_API_URL || url.getUrlMaster().urlApi
-        }/subcategory`,
+        `${url.getUrlMaster().urlApi}/subcategory`,
         formData,
         token
       );

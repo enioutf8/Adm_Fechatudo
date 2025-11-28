@@ -55,6 +55,9 @@ export default class Category extends Urlmaster {
       token
     );
 
+  updateSubCategoryLayout = async (data) =>
+    axios.put(`${this.getUrlMaster().urlApi}layout-subcategory`, data);
+
   updateSubCategoryIMG = async (formData, token) =>
     axios.post(
       `${this.getUrlMaster().urlApi}layout-subcategory-file`,
