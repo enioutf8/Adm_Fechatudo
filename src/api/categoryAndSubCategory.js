@@ -50,7 +50,7 @@ export default class Category extends Urlmaster {
 
   updateSubCategory = async (id, data, token) =>
     axios.put(
-      `${this.getUrlMaster().urlApi}layout-subcategory`,
+      `${this.getUrlMaster().urlApi}sub-category-adm/${id}`,
       data,
       token
     );
