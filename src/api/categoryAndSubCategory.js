@@ -68,4 +68,10 @@ export default class Category extends Urlmaster {
 
   deleteSubCategory = async (id, token) =>
     axios.delete(`${this.getUrlMaster().urlApi}sub-category-adm/${id}`, token);
+
+  deleteSubCategoryLayout = async (id, token) =>
+    axios.delete(
+      `${this.getUrlMaster().urlApi}layout-subcategory/${id}`,
+      token
+    );
 }

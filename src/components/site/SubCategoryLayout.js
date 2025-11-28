@@ -225,7 +225,7 @@ const SubCategoryLayout = ({ token }) => {
   // Função para deletar a subcategoria
   const handleDelete = async (item) => {
     try {
-      await api.deleteSubCategory(item.id_layout_subcategories);
+      await api.deleteSubCategoryLayout(item.id_layout_subcategories);
       setLayoutSubCategories((prev) =>
         prev.filter((item2) => item2.id_sub_category !== item.id_sub_category)
       );
