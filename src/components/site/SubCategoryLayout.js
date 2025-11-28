@@ -168,6 +168,7 @@ const SubCategoryLayout = ({ token }) => {
       setTimed(Date.now());
       setCategoriaSelecionada("");
       setSubCategoriasFiltradas([]);
+      loadLayoutSubCategories();
       setEditSub(false);
     } catch (err) {
       console.error(err);
