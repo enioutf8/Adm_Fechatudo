@@ -103,7 +103,7 @@ const BannerEditorRow = ({ token }) => {
     e.preventDefault();
 
     const result = allBannerHome.find(
-      (item) => item.id_archives === idBannerHome
+      (item) => item.id_archives === parseInt(idBannerHome)
     );
 
     const formData = new FormData();
