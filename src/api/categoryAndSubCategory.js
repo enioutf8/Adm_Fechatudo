@@ -9,6 +9,7 @@ export default class Category extends Urlmaster {
   // -----------------------------
   // CATEGORY
   // -----------------------------
+
   findAllCategory = async (token) =>
     axios.get(`${this.getUrlMaster().urlApi}category-adm`, token);
 

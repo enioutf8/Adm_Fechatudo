@@ -16,10 +16,7 @@ export default class Bannerhome extends Urlmaster {
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar menus da navbar:", error);
-
-      // Você pode lançar o erro para o controller tratar,
-      // ou retornar um objeto de erro padronizado
-      throw new Error("Falha ao carregar menus da navbar");
+  
     }
   };
   deleteBannerHome = async (data, token) => {

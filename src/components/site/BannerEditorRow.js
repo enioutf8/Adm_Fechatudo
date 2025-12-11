@@ -44,8 +44,6 @@ const BannerEditorRow = ({ token }) => {
     const fetchBanners = async () => {
       try {
         const response = await bannerHome.findBannersHome(token);
-        // Adiciona um campo temporário `localImageUrl` para cada banner
-        // Isso permitirá pré-visualizar uploads locais antes de salvar
         const bannersWithLocalImages = response.map((b) => ({
           ...b,
           localImageUrl: `${urlimgs.getUrlMaster().urlSite}${b.archive}`, // Imagem inicial
@@ -65,15 +63,19 @@ const BannerEditorRow = ({ token }) => {
       alt: editBannerTitle.length === 0 ? banner.alt : editBannerTitle,
       url: editBannerURL.length === 0 ? banner.url : editBannerURL,
     };
-
     await bannerHome.editBannerHome(dataUpdate);
     setTimedBannerHome(Date.now());
   };
 
-  const handleDeleteBanner = async (bannerId) => {
-    const idDelete = { id_archives: bannerId };
-    await bannerHome.deleteBannerHome(idDelete);
-    setTimedBannerHome(Date.now());
+  const handleDeleteBanner = async (bannerId, bannerIdMobile) => {
+    try {
+      const idDelete = { id_archives: bannerId };
+      await bannerHome.deleteBannerHome(idDelete);
+      await handleDeleteBannerMobile(bannerIdMobile);
+      setTimedBannerHome(Date.now());
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleBannerUpload = (e) => {
@@ -127,9 +129,9 @@ const BannerEditorRow = ({ token }) => {
   const handleDeleteBannerMobile = async (bannerId) => {
     const id_mobile = { id_mobile: bannerId };
     await bannerHome.deleteBannerHomeMobile(id_mobile);
-
     setTimedBannerHome(Date.now());
   };
+
   const handleSaveBannerMobile = async (bannerId, banner) => {
     const dataUpdate = {
       id_mobile: bannerId,
@@ -140,14 +142,9 @@ const BannerEditorRow = ({ token }) => {
     await bannerHome.editBannerHomeMobile(dataUpdate);
     setTimedBannerHome(Date.now());
   };
-  if (allBannerHome.length === 0) {
-    return (
-      <div className="areaTotalBanner">
-        <p>Nenhum banner encontrado ou carregando...</p>
-      </div>
-    );
-  }
 
+  console.log(timedBannerHome);
+  console.log(allBannerHome);
   return (
     <Container>
       <div className="  d-flex flex-column flex-lg-row  ">
@@ -322,7 +319,12 @@ const BannerEditorRow = ({ token }) => {
                         </button>
                         <button
                           className="btn btn-danger"
-                          onClick={() => handleDeleteBanner(banner.id_archives)} // Botão para deletar
+                          onClick={() =>
+                            handleDeleteBanner(
+                              banner.id_archives,
+                              banner?.archives_mobile?.id_mobile
+                            )
+                          } // Botão para deletar
                         >
                           <FaTrashAlt />
                         </button>

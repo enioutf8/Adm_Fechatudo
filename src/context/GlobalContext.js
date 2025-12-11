@@ -58,6 +58,7 @@ export const GlobalContextProvider = ({ children }) => {
           label: "Listar / Editar Produtos",
           link: "/admin/produtos/listar",
         },
+        { id: 25, label: "Incluir Instalação", link: "/admin/produtos/instalacao" },
         { id: 23, label: "Categorias", link: "/admin/produtos/categorias" },
         { id: 24, label: "Marcas", link: "/admin/produtos/marca" },
       ],

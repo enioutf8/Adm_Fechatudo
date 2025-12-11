@@ -25,14 +25,14 @@ const SubCategoryLayout = ({ token }) => {
     url_direction: "",
     target_blank: false,
   });
-
+  
   // ===============================
   // LOAD CATEGORIES + SUBCATEGORIES
   // ===============================
+ 
   const loadCategories = async () => {
     try {
       setLoading(true);
-
       const response = await api.findAllCategory();
       const lista = response.data.data || [];
 
@@ -59,9 +59,7 @@ const SubCategoryLayout = ({ token }) => {
   // ===============================================================
   const forceCategoriaChange = (idCategoria) => {
     const categoria = categorias.find((c) => c.id === idCategoria);
-
     setCategoriaSelecionada(idCategoria);
-
     if (categoria) {
       setSubCategoriasFiltradas(categoria.subcategorias);
     } else {
@@ -142,10 +140,8 @@ const SubCategoryLayout = ({ token }) => {
     e.preventDefault();
 
     try {
-      console.log("AQUI");
       await api.updateSubCategoryLayout(form);
 
-      // Se tiver imagem, envia o upload
       if (form.icon_file) {
         const formData = new FormData();
         formData.append(
@@ -179,6 +175,7 @@ const SubCategoryLayout = ({ token }) => {
   // ===========================
   // CARREGA LISTA DE LAYOUTS
   // ===========================
+
   const loadLayoutSubCategories = async () => {
     try {
       const response = await axios.get(

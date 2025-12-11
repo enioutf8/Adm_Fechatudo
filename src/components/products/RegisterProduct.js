@@ -4,7 +4,8 @@ import CategoryManager from "../site/CategoryManager";
 import ProductForm from "../site/ProductForm";
 import BrandForm from "./BrandForm";
 import "./RegisterProduct.css";
-
+import PageInstalation from "../InstalationEditor/PageInstalation";
+import InstallationEditor from "../site/InstallationEditor";
 const RegisterProduct = ({ submenu, token }) => {
   return (
     <>
@@ -15,6 +16,7 @@ const RegisterProduct = ({ submenu, token }) => {
         )}
         {submenu === "Categorias" && <CategoryManager token={token} />}
         {submenu === "Marcas" && <BrandForm token={token} />}
+        {submenu === "Incluir Instalação" && <PageInstalation token={token} />}
       </HollowPage>
     </>
   );
