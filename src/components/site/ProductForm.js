@@ -135,7 +135,7 @@ const ProductForm = ({ product, token }) => {
       const response = await productApi.editProduct(sendProductData, token);
 
       if (response) {
-        localStorage.setItem("productSubmit", JSON.stringify(response));
+        //localStorage.setItem("productSubmit", JSON.stringify(response));
         alert("✅ Produto salvo com sucesso!");
       }
     } else {
@@ -157,7 +157,7 @@ const ProductForm = ({ product, token }) => {
       );
 
       if (response) {
-        localStorage.setItem("productSubmit", JSON.stringify(response));
+        //localStorage.setItem("productSubmit", JSON.stringify(response));
         alert("✅ Produto salvo com sucesso!");
         const stored = localStorage.getItem("productSubmit");
         if (!stored) return;
