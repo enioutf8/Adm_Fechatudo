@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ProductBanner from "../../api/productBanner";
-
+import Urlmaster from "../../api/urlMaster";
 export default function ProductBannerForm({ productId, onSuccess }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -8,7 +8,8 @@ export default function ProductBannerForm({ productId, onSuccess }) {
   const [message, setMessage] = useState("");
   const [product, setProduct] = useState({});
   const [timed, setTimed] = useState(Date.now());
-  const url = "http://localhost:3000";
+  const asd = new Urlmaster();
+  const url = asd.getUrlMaster().urlSite;
 
   const api = new ProductBanner();
 
