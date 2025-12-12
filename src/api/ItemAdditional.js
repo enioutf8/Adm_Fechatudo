@@ -1,5 +1,6 @@
 import axios from "axios";
 import Urlmaster from "./urlMaster";
+let sessionExpiredHandled = false;
 export default class ItemAdditional extends Urlmaster {
   constructor() {
     super();
@@ -14,8 +15,15 @@ export default class ItemAdditional extends Urlmaster {
       );
       return response.data;
     } catch (error) {
-      console.error(error);
-      throw new Error(error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+
+        alert("Sua sessão expirou. Você será redirecionado.");
+
+        window.location.href = "/";
+      }
+
+      return null;
     }
   };
 }

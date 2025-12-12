@@ -7,11 +7,13 @@ import { TiDelete } from "react-icons/ti";
 import axios from "axios";
 import { GlobalContext } from "../../context/GlobalContext";
 import Urlmaster from "../../api/urlMaster";
+import ProductBannerForm from "../products/ProductBannerForm";
 
 const TechnicalSections = ({ token }) => {
   const { timed, setTimed, productEdit } = useContext(GlobalContext);
   const urlMaster = new Urlmaster();
   const urlServidor = `${urlMaster.getUrlMaster().urlSite}`;
+  const [productId, setProductId] = useState({});
 
   const [titleMainFeatures, setTitleMainFeatures] = useState("");
   const [valueMainFeatures, setValueMainFeatures] = useState("");
@@ -43,7 +45,8 @@ const TechnicalSections = ({ token }) => {
         localStorage.getItem("technicalDataSubmit")
       );
 
-      console.log(productLocal);
+      setProductId(productLocal.Product_ID);
+
       if (!productLocal?.Product_Code) return;
 
       const response = await productAditionals.findOnlyProduct(
@@ -516,7 +519,9 @@ const TechnicalSections = ({ token }) => {
 
       // 🔹 Se o item tiver ID, remove no backend
       if (itemAdditional.Id_Item_additional) {
-        const url = `${urlMaster.getUrlMaster().urlApi}item-additional/${itemAdditional.Id_Item_additional}`;
+        const url = `${urlMaster.getUrlMaster().urlApi}item-additional/${
+          itemAdditional.Id_Item_additional
+        }`;
         const response = await axios.delete(url);
 
         if (!(response.status === 200 || response.status === 204)) {
@@ -964,6 +969,8 @@ const TechnicalSections = ({ token }) => {
       ) : (
         <></>
       )}
+
+      <ProductBannerForm productId={productId} />
     </div>
   );
 };

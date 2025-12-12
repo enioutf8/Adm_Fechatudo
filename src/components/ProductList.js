@@ -261,7 +261,7 @@ const ProductList = ({ token }) => {
                   <tr>
                     {/* colSpan ajustado para 6, pois o CSS customizado só esconde, não remove as colunas */}
                     <td colSpan="6" className="text-center py-3">
-                      Nenhum produto encontrado.
+                      Carregando...
                     </td>
                   </tr>
                 )}

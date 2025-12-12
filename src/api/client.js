@@ -1,6 +1,6 @@
 import axios from "axios";
 import Urlmaster from "./urlMaster";
-
+let sessionExpiredHandled = false;
 export default class Clients extends Urlmaster {
   constructor() {
     super();
@@ -15,7 +15,12 @@ export default class Clients extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao buscar menus da navbar:", error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
 }

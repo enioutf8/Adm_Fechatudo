@@ -1,13 +1,12 @@
 import axios from "axios";
 import Urlmaster from "./urlMaster";
-
+let sessionExpiredHandled = false;
 export default class Orders extends Urlmaster {
   constructor() {
     super();
   }
 
   findOrdersPendent = async (token) => {
-  
     try {
       const response = await axios.get(
         `${this.getUrlMaster().urlSite}cliente/orders-pendent-adm`,
@@ -16,11 +15,16 @@ export default class Orders extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao buscar menus da navbar:", error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
+
   findOrdersFinished = async (token) => {
-    console.log(token);
     try {
       const response = await axios.get(
         `${this.getUrlMaster().urlSite}cliente/orders-finished-adm`,
@@ -29,11 +33,18 @@ export default class Orders extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao buscar menus da navbar:", error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+
+        alert("Sua sessão expirou. Você será redirecionado.");
+
+        window.location.href = "/";
+      }
+
+      return null;
     }
   };
   updateOrders = async (data, token) => {
-    console.log(token);
     try {
       const response = await axios.put(
         `${this.getUrlMaster().urlSite}cliente/orders/${data.id_order}`,
@@ -43,7 +54,15 @@ export default class Orders extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao buscar menus da navbar:", error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+
+        alert("Sua sessão expirou. Você será redirecionado.");
+
+        window.location.href = "/";
+      }
+
+      return null;
     }
   };
 }

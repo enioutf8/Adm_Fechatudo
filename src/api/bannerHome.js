@@ -1,6 +1,6 @@
 import axios from "axios";
 import Urlmaster from "./urlMaster";
-
+let sessionExpiredHandled = false;
 export default class Bannerhome extends Urlmaster {
   constructor() {
     super();
@@ -15,8 +15,12 @@ export default class Bannerhome extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao buscar menus da navbar:", error);
-  
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
   deleteBannerHome = async (data, token) => {
@@ -30,8 +34,12 @@ export default class Bannerhome extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao deletar menus da navbar:", error);
-      throw new Error("Falha ao deletar menus da navbar");
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
   uploadBannerHome = async (formData, token) => {
@@ -48,7 +56,12 @@ export default class Bannerhome extends Urlmaster {
       console.log("✅ Banner enviado com sucesso:", response.data);
       return response.data;
     } catch (error) {
-      console.error("❌ Erro ao enviar banner:", error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
   editBannerHome = async (data, token) => {
@@ -61,8 +74,12 @@ export default class Bannerhome extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao deletar menus da navbar:", error);
-      throw new Error("Falha ao deletar menus da navbar");
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
   // MOBILE
@@ -80,7 +97,12 @@ export default class Bannerhome extends Urlmaster {
       console.log("✅ Banner enviado com sucesso:", response.data);
       return response.data;
     } catch (error) {
-      console.error("❌ Erro ao enviar banner:", error);
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
   deleteBannerHomeMobile = async (data, token) => {
@@ -107,8 +129,12 @@ export default class Bannerhome extends Urlmaster {
 
       return response.data;
     } catch (error) {
-      console.error("Erro ao deletar menus da navbar:", error);
-      throw new Error("Falha ao deletar menus da navbar");
+      if (error?.response?.status === 401 && !sessionExpiredHandled) {
+        sessionExpiredHandled = true;
+        alert("Sua sessão expirou. Você será redirecionado.");
+        window.location.href = "/";
+      }
+      return null;
     }
   };
 }
