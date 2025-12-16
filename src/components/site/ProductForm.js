@@ -4,14 +4,58 @@ import { useNavigate } from "react-router-dom";
 import Category from "../../api/categoryAndSubCategory";
 import Product from "../../api/product";
 import Brands from "../../api/Brands";
-import ProductTechnicalForm from "./ProductTechnicalForm";
-import { Button, Modal } from "react-bootstrap";
 import { GlobalContext } from "../../context/GlobalContext";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+import Quill from "quill";
+import ResizeImage from "quill-resize-image";
+import TechnicalSections from "./TechnicalSections";
+Quill.register("modules/resizeImage", ResizeImage);
 
 const ProductForm = ({ product, token }) => {
-  const { timed, setTimed, productEdit, currentMenuSelected } =
+  const { setRefreshProducList, timed, setTimed, productEdit } =
     useContext(GlobalContext);
   const navigate = useNavigate();
+
+  const modules = {
+    toolbar: [
+      [{ font: [] }],
+      [{ size: ["small", false, "large", "huge"] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ script: "sub" }, { script: "super" }],
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      [{ align: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["blockquote", "code-block"],
+      ["link", "image", "video"],
+      ["clean"],
+    ],
+    resizeImage: {}, // 👈 nome exato do módulo registrado
+  };
+
+  const formats = [
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "color",
+    "background",
+    "script",
+    "header",
+    "align",
+    "list",
+    "blockquote",
+    "code-block",
+    "link",
+    "image",
+    "video",
+  ];
+  const defaultTableHTML = `
+  <p><strong style="color: rgb(68, 68, 68);">Modelo:</strong><span style="color: rgb(68, 68, 68);"> </span><span style="color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);">MFR 1001</span></p><p><strong style="color: rgb(68, 68, 68); background-color: rgba(0, 0, 0, 0);">Material: </strong><span style="color: rgb(68, 68, 68);"> Aço Escovado</span></p><p><strong style="color: rgb(68, 68, 68); background-color: rgb(251, 251, 251);">Espessura da Porta: </strong><span style="color: rgb(68, 68, 68);"> </span><span style="color: rgb(68, 68, 68); background-color: rgb(251, 251, 251);">25 a 50 mm</span></p><p><strong style="color: rgb(68, 68, 68); background-color: rgba(0, 0, 0, 0);">Garantia: </strong><span style="color: rgb(68, 68, 68);"> </span><span style="color: rgb(68, 68, 68); background-color: rgba(0, 0, 0, 0);">1 ano (incluindo 90 dias previstos)</span></p>
+ `;
 
   const categoryApi = new Category();
   const productApi = new Product();
@@ -21,12 +65,16 @@ const ProductForm = ({ product, token }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategoriesChange, setSubCategoriesChange] = useState("");
+  const [selectedBrands, setSelectedBrands] = useState(1);
+  const [selectedEnvironment, setSelectedEnvironment] = useState(1);
 
   const [prodcutName, setProductName] = useState("");
-  const [prodcutDescription, setProductDescription] = useState("");
-  const [productPrice, setProductPrice] = useState(0);
+  const [brands, setBrands] = useState([]);
+  const [prodcutDescription, setProductDescription] =
+    useState(defaultTableHTML);
+  const [productPrice, setProductPrice] = useState(999999);
   const [productDiscount, setProductDiscount] = useState(0);
-  const [productStock, setProductStock] = useState(0);
+  const [productStock, setProductStock] = useState(5);
   const [productActive, setProductActive] = useState(true);
 
   const [productLastLocalStorage, setProductLastLocalStorage] = useState({});
@@ -41,7 +89,8 @@ const ProductForm = ({ product, token }) => {
       try {
         const response = await categoryApi.findAllCategory(token);
         const data = response?.data?.data || [];
-        console.log(data);
+        setBrands(await brandsApi.findAllBrands(token));
+
         if (data.length > 0) {
           setCategories(data);
 
@@ -75,7 +124,7 @@ const ProductForm = ({ product, token }) => {
       setProductDescription(savedProduct?.data?.Description || "");
       setProductPrice(savedProduct?.data?.Price || 0);
       setProductDiscount(savedProduct?.data?.Unit_Discount || 0);
-      setProductStock(savedSheet?.stock || 0);
+      setProductStock(savedProduct?.data?.stock?.[0]?.Quantity || 10);
       setProductActive(savedProduct?.data?.Is_Active ?? true);
 
       if (savedProduct.id_sub_category) {
@@ -92,7 +141,6 @@ const ProductForm = ({ product, token }) => {
         }
       }
     };
-
     loadProductInLocalStorage();
   }, [categories, timed]);
 
@@ -105,52 +153,56 @@ const ProductForm = ({ product, token }) => {
     setSubCategories(subCategoryList);
     setSubCategoriesChange(subCategoryList[0]?.id_sub_category || "");
   };
+  const handleChangeBrands = (brandId) => {
+    setSelectedBrands(brandId);
+    const findbrand = brands.find((item) => item.Id_brand == brandId);
+  };
+
   const handleToggle = (e) => {
     setProductActive(e.target.checked);
   };
 
-  console.log(currentMenuSelected.subItem);
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
 
-    if (productEdit) {
-      const sendProductData = {
-        Product_ID: product.Product_ID,
-        id_sub_category: subCategoriesChange,
-        Product_Name: prodcutName,
-        Description: prodcutDescription,
-        Price: parseFloat(productPrice),
-        Old_price: parseFloat(productPrice),
-        Unit_Discount: parseInt(productDiscount),
-        stock: parseInt(productStock),
-        Is_Active: productActive,
+    const sendProductData = {
+      ...(productEdit && {
+        Product_ID: product?.Product_ID ?? null,
+      }),
+
+      Id_brand: Number(selectedBrands),
+      id_sub_category: Number(subCategoriesChange),
+      Id_Environment: Number(selectedEnvironment),
+      Product_Name: prodcutName,
+      Description: prodcutDescription,
+      Old_price: 0,
+      Price: Number(productPrice),
+      Unit_Discount: Number(productDiscount) || 0,
+      Product_Code: "",
+      stock: Number(productStock) || 10,
+      Is_Active: productActive,
+      ...(productEdit && {
         details: {
           sub_category: subCategoriesChange,
-          technical_sheet: {},
-          main_features: [],
-          included_items: [],
         },
-      };
-
+      }),
+    };
+    if (productEdit) {
       const response = await productApi.editProduct(sendProductData, token);
 
       if (response) {
+        localStorage.removeItem('productSubmit')
         //localStorage.setItem("productSubmit", JSON.stringify(response));
-        alert("✅ Produto salvo com sucesso!");
+        alert("✅ Produto Editado com sucesso!");
+        //const stored = localStorage.getItem("productSubmit");
+        //setTimed(Date.now());
+        setRefreshProducList(false);
+        //if (!stored) return;
+        //const savedProduct = JSON.parse(stored);
+        //setProductLastLocalStorage(savedProduct);
+        setTimeout(() => setTimed(Date.now()), 10);
       }
     } else {
-      const sendProductData = {
-        id_sub_category: subCategoriesChange,
-        Product_Name: prodcutName,
-        Description: prodcutDescription,
-        Old_price: 0,
-        Price: productPrice,
-        Unit_Discount: parseInt(productDiscount),
-        Product_Code: "",
-        stock: parseInt(productStock),
-        Is_Active: productActive,
-      };
-
       const response = await productApi.registerNewProduct(
         sendProductData,
         token
@@ -159,10 +211,13 @@ const ProductForm = ({ product, token }) => {
       if (response) {
         //localStorage.setItem("productSubmit", JSON.stringify(response));
         alert("✅ Produto salvo com sucesso!");
-        const stored = localStorage.getItem("productSubmit");
-        if (!stored) return;
-        const savedProduct = JSON.parse(stored);
-        setProductLastLocalStorage(savedProduct);
+        localStorage.removeItem('productSubmit')
+        //const stored = localStorage.getItem("productSubmit");
+        //setTimed(Date.now());
+        setRefreshProducList(false);
+        //if (!stored) return;
+        //const savedProduct = JSON.parse(stored);
+        //setProductLastLocalStorage(savedProduct);
         setTimeout(() => setTimed(Date.now()), 10);
       }
     }
@@ -204,6 +259,19 @@ const ProductForm = ({ product, token }) => {
                 </option>
               ))}
             </select>
+
+            <label className="form-label fw-semibold">Marca *</label>
+            <select
+              className="form-control"
+              value={selectedBrands}
+              onChange={(e) => handleChangeBrands(e.target.value)}
+            >
+              {brands.map((brand) => (
+                <option key={brand.Id_brand} value={brand.Id_brand}>
+                  {brand.brand}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Subcategoria */}
@@ -223,6 +291,18 @@ const ProductForm = ({ product, token }) => {
                 </option>
               ))}
             </select>
+
+            <label className="form-label fw-semibold">
+              Ambiente de Instalação*
+            </label>
+            <select
+              className="form-control"
+              value={selectedEnvironment}
+              onChange={(e) => setSelectedEnvironment(e.target.value)}
+            >
+              <option value={1}>{"Interno"}</option>
+              <option value={2}>{"Externo"}</option>
+            </select>
           </div>
 
           {/* Nome do Produto */}
@@ -240,12 +320,15 @@ const ProductForm = ({ product, token }) => {
           {/* Descrição */}
           <div className="col-12">
             <label className="form-label fw-semibold">Descrição *</label>
-            <textarea
+
+            <ReactQuill
+              theme="snow"
               value={prodcutDescription}
-              onChange={(e) => setProductDescription(e.target.value)}
-              className="form-control"
-              rows={4}
-              placeholder="Digite a descrição do produto"
+              onChange={setProductDescription}
+              modules={modules}
+              formats={formats}
+              placeholder="Digite a descrição completa do produto"
+              style={{ height: "max-content", marginBottom: "50px" }}
             />
           </div>
         </div>
@@ -304,6 +387,9 @@ const ProductForm = ({ product, token }) => {
             Produto Ativo
           </label>
         </div>
+
+        {productEdit ? <TechnicalSections token={token} /> : <></>}
+
         {/* Botão */}
         {productLastLocalStorage.success ? (
           <></>
@@ -315,35 +401,6 @@ const ProductForm = ({ product, token }) => {
           </div>
         )}
       </form>
-      {Object.keys(productLastLocalStorage).length === 0 ? (
-        <></>
-      ) : (
-        <ProductTechnicalForm
-          token={token}
-          brands={brandsApi}
-          productLocalStorage={productLastLocalStorage?.data}
-        />
-      )}
-
-      {Object.keys(productLastLocalStorage).length > 0 ? (
-        <div className="w-100  d-flex justify-content-center align-items-center">
-          <Button variant="success btn-lg" onClick={handleShow}>
-            Finalizar
-          </Button>
-        </div>
-      ) : (
-        <></>
-      )}
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton></Modal.Header>
-        <Modal.Body>Finalizar Cadastro do Produto?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleFinishProduct}>
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

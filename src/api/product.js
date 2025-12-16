@@ -6,6 +6,22 @@ export default class Product extends Urlmaster {
     super();
   }
 
+  registerNewProduct = async (data, token) => {
+    try {
+      //console.log(data);
+      const response = await axios.post(
+        `${this.getUrlMaster().urlApi}product`,
+        data,
+        token
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar menus da navbar:", error);
+
+      throw new Error("Falha ao carregar menus da navbar");
+    }
+  };
+
   editProduct = async (data, token) => {
     try {
       console.log(data);
@@ -21,24 +37,8 @@ export default class Product extends Urlmaster {
     }
   };
 
-  registerNewProduct = async (data, token) => {
-    try {
-      //console.log(data);
-      const response = await axios.post(
-        `${this.getUrlMaster().urlApi}product`,
-        data,
-        token
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao buscar menus da navbar:", error);
-
-  
-      throw new Error("Falha ao carregar menus da navbar");
-    }
-  };
-
   findOnlyProduct = async (string, token) => {
+    console.log(string);
     try {
       const response = await axios.get(
         `${this.getUrlMaster().urlApi}product-only-adm/${string}`,

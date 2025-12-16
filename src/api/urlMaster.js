@@ -7,4 +7,3 @@ export default class Urlmaster {
     return { urlApi, urlSite };
   }
 }
- 

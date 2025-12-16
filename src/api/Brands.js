@@ -7,7 +7,6 @@ export default class Brands extends Urlmaster {
   }
 
   findAllBrands = async (token) => {
-    console.log(token);
     try {
       const response = await axios.get(
         `${this.getUrlMaster().urlApi}brands`,
@@ -26,7 +25,6 @@ export default class Brands extends Urlmaster {
   };
 
   createBrand = async (data, token) => {
-    console.log(token);
     try {
       const response = await axios.post(
         `${this.getUrlMaster().urlApi}brands`,

@@ -175,13 +175,8 @@ const TechnicalSections = ({ token }) => {
       return;
     }
 
-    const productLocal = JSON.parse(
-      localStorage.getItem("technicalDataSubmit")
-    );
-    if (!productLocal?.Product_ID || !productLocal?.Product_Code) {
-      alert("Produto inválido ou não encontrado!");
-      return;
-    }
+    const productLocal = JSON.parse(localStorage.getItem("productSubmit"));
+    console.log(productLocal?.data.Product_ID);
 
     try {
       const productApi = new Product();
@@ -191,10 +186,11 @@ const TechnicalSections = ({ token }) => {
         formData.append("fotos", img); // 👈 campo exigido: fotos
       });
 
+      console.log(formData);
       const response = await productApi.addImgsProduct(
-        productLocal.Product_ID,
-        productLocal.Product_Code,
-        productLocal.Product_Name || "SemNome",
+        productLocal.data.Product_ID,
+        productLocal.data.Product_Code,
+        productLocal.data.Product_Name || "SemNome",
         formData,
         token
       );
@@ -544,431 +540,153 @@ const TechnicalSections = ({ token }) => {
   };
 
   return (
-    <div className="p-3">
-      {/* Seção 3 - Características Principais */}
-      <Card className="mb-4">
-        <Card.Body>
-          <Card.Title className="fw-bold mb-3">
-            3. Recursos Principais
-          </Card.Title>
-
-          <Form>
-            <Row className="align-items-end mb-3">
-              <Col md={6}>
-                <Form.Group controlId="label">
-                  <Form.Label>Rótulo/Label</Form.Label>
-                  <Form.Control
-                    value={titleMainFeatures}
-                    onChange={(e) => setTitleMainFeatures(e.target.value)}
-                    type="text"
-                    placeholder="Ex: Potência, Material Principal"
-                  />
-                </Form.Group>
-              </Col>
-
-              <Col md={6}>
-                <Form.Group controlId="value">
-                  <Form.Label>Valor</Form.Label>
-                  <Form.Control
-                    value={valueMainFeatures}
-                    onChange={(e) => setValueMainFeatures(e.target.value)}
-                    type="text"
-                    placeholder="Ex: 500W, Aço Inox"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <ul className="list-unstyled">
-              {listMainFacture.map((item, index) => (
-                <li
-                  key={index + 800}
-                  className="d-flex justify-content-between align-items-center border-bottom py-2"
-                >
-                  <div>
-                    <strong>{item.Label}</strong> — {item.Value}
-                  </div>
-                  {productEdit && (
-                    <button
-                      type="button"
-                      className="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center rounded-circle"
-                      style={{ width: "32px", height: "32px" }}
-                      title="Remover item"
-                      onClick={() => handleDeleteMainFeacture(item)} // <--- substitua pela sua função de remoção
-                    >
-                      <TiDelete size={18} />
-                    </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              onClick={handleAddMainFacture}
-              variant="outline-secondary"
-              className="w-100"
-            >
-              + Adicionar Característica
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-      {/* Seção 4 - Itens e Acessórios Adicionais */}
-      <Card className="mb-4">
-        <Card.Body>
-          <h4 className="fw-bold mb-3 text-center">4. Itens Inclusos</h4>
-          <Form>
-            <Row className="align-items-end mb-3">
-              <Col md={6}>
-                <Form.Group controlId="itemName">
-                  <Form.Label>Nome do Item</Form.Label>
-                  <Form.Control
-                    value={titleItemIncluded}
-                    onChange={(e) => setTitleItemIncluded(e.target.value)}
-                    type="text"
-                    placeholder="Ex: Cabo USB, Adaptador, Manual"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <ul>
-              {listItemAdditional.map((item, index) => (
-                <li
-                  key={index + 200}
-                  className="d-flex justify-content-between align-items-center border-bottom py-2"
-                >
-                  <div>{item.Item}</div>
-
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center rounded-circle"
-                    style={{ width: "32px", height: "32px" }}
-                    title="Remover item"
-                    onClick={() => handleDeleteItemIncluded(item)} // substitua pela função de remoção correta
-                  >
-                    <TiDelete size={18} />
-                  </button>
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              onClick={handleAddItemIncluded}
-              variant="outline-secondary"
-              className="w-100"
-            >
-              + Adicionar Item
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-      {/* Seção 5 - Imagens, Cor e Ambiente */}
-      <Card>
-        <Card.Body>
-          <h5 className="fw-bold mb-3 text-center">
-            {" "}
-            5. Adicionar Imagens, Cor e Tipo de Ambiente
-          </h5>
-
-          {/* Imagem */}
-          <Form.Group className="mb-3">
-            <Form.Label>Adicionar Imagem</Form.Label>
-            <Form.Control
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
+    <div>
+      <h4 className="text-center mb-4 fw-bold">2. Imagens e Cores.</h4>
+      {/* Imagem */}
+      <Form.Group className="mb-3">
+        <Form.Label>Adicionar Imagem</Form.Label>
+        <Form.Control
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+        {imagePreview && (
+          <div className="mt-3">
+            <img
+              src={imagePreview}
+              alt="Preview"
+              style={{ width: "120px", borderRadius: "8px" }}
             />
-            {imagePreview && (
-              <div className="mt-3">
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  style={{ width: "120px", borderRadius: "8px" }}
-                />
-              </div>
-            )}
-            <div className="d-flex gap-2 mt-2">
-              <Button
-                variant="outline-secondary"
-                className="flex-fill"
-                onClick={handleAddImage}
-              >
-                + Adicionar Imagem
-              </Button>
-              <Button
-                variant="outline-success"
-                className="flex-fill"
-                onClick={handleSendImages}
-              >
-                Enviar Imagens
-              </Button>
-            </div>
+          </div>
+        )}
+        <div className="d-flex gap-2 mt-2">
+          <Button
+            variant="outline-secondary"
+            className="flex-fill"
+            onClick={handleAddImage}
+          >
+            + Adicionar Imagem
+          </Button>
+          <Button
+            variant="outline-dark"
+            className="flex-fill"
+            onClick={handleSendImages}
+          >
+            Enviar Imagens
+          </Button>
+        </div>
 
-            <div className="mt-3 d-flex flex-wrap gap-2">
-              {listImages.map((img, i) => (
-                <img
-                  key={i}
-                  src={URL.createObjectURL(img)}
-                  alt={`img-${i}`}
-                  style={{ width: "80px", borderRadius: "6px" }}
-                />
-              ))}
-            </div>
-          </Form.Group>
+        <div className="mt-3 d-flex flex-wrap gap-2">
+          {listImages.map((img, i) => (
+            <img
+              key={i}
+              src={URL.createObjectURL(img)}
+              alt={`img-${i}`}
+              style={{ width: "80px", borderRadius: "6px" }}
+            />
+          ))}
+        </div>
+      </Form.Group>
 
-          {/* Imagens Existentes do Produto */}
-          {listProductImages.length > 0 && (
-            <div className="mb-4">
-              <Form.Label className="fw-bold d-block text-center text-md-start">
-                Imagens do Produto
-              </Form.Label>
+      {/* Imagens Existentes do Produto */}
+      {listProductImages.length > 0 && (
+        <div className="mb-4">
+          <Form.Label className="fw-bold d-block text-center text-md-start">
+            Imagens do Produto
+          </Form.Label>
+          <div
+            className="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 mt-3"
+            style={{
+              rowGap: "1rem",
+            }}
+          >
+            {listProductImages.map((img, index) => (
               <div
-                className="d-flex flex-wrap justify-content-center justify-content-md-start gap-3 mt-3"
+                key={index}
+                className="position-relative"
                 style={{
-                  rowGap: "1rem",
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  border: "1px solid #ddd",
+                  flexShrink: 0,
                 }}
               >
-                {listProductImages.map((img, index) => (
-                  <div
-                    key={index}
-                    className="position-relative"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      borderRadius: "10px",
-                      overflow: "hidden",
-                      border: "1px solid #ddd",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <img
-                      src={`${urlServidor}${img.url}`}
-                      alt={img.name || `Imagem ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                        borderRadius: "10px",
-                      }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-danger position-absolute d-flex align-items-center justify-content-center"
-                      style={{
-                        top: "5px",
-                        right: "5px",
-                        borderRadius: "50%",
-                        width: "26px",
-                        height: "26px",
-                        padding: 0,
-                        lineHeight: 0,
-                      }}
-                      title="Remover imagem"
-                      onClick={() => handleDeleteImage(img)}
-                    >
-                      <TiDelete />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Cor */}
-          <Form.Group className="mb-3">
-            <Form.Label>Selecionar Cor</Form.Label>
-            <div className="d-flex align-items-center gap-3">
-              <Form.Control
-                type="color"
-                value={selectedColor}
-                onChange={(e) => setSelectedColor(e.target.value)}
-                style={{ width: "60px", height: "40px", padding: "0" }}
-              />
-
-              <Form.Control
-                type="text"
-                placeholder="Nome da cor"
-                value={colorName}
-                onChange={(e) => setColorName(e.target.value)}
-                style={{ maxWidth: "200px" }}
-              />
-
-              <Button variant="outline-secondary" onClick={handleAddColor}>
-                Adicionar
-              </Button>
-            </div>
-
-            <div className="mt-3 d-flex gap-2 flex-wrap">
-              {listColors.map((item, i) => (
-                <div
-                  key={i}
-                  title={item.color}
+                <img
+                  src={`${urlServidor}${img.url}`}
+                  alt={img.name || `Imagem ${index + 1}`}
                   style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "6px",
-                    backgroundColor: item.cod_color,
-                    border: "1px solid #ccc",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    borderRadius: "10px",
                   }}
-                ></div>
-              ))}
-            </div>
-          </Form.Group>
-
-          {/* Ambiente */}
-          <Form.Group>
-            <Form.Label>Tipo de Ambiente</Form.Label>
-            <div className="d-flex align-items-center gap-3">
-              <Form.Check
-                type="checkbox"
-                label="Interno"
-                checked={envIndoor}
-                onChange={(e) => setEnvIndoor(e.target.checked)}
-              />
-              <Form.Check
-                type="checkbox"
-                label="Externo"
-                checked={envOutdoor}
-                onChange={(e) => setEnvOutdoor(e.target.checked)}
-              />
-              <Button
-                variant="outline-secondary"
-                onClick={handleAddEnvironment}
-              >
-                Adicionar
-              </Button>
-            </div>
-
-            <ul className="mt-3">
-              {listEnvironments.map((env, i) => (
-                <li key={i}>{env.label}</li>
-              ))}
-            </ul>
-          </Form.Group>
-        </Card.Body>
-      </Card>
-      {/* Seção 6 - Imagens, Cor e Ambiente */}
-      {productEdit ? (
-        <Card className="p-4 mt-3">
-          <h4 className="mb-3 text-center">Adicionar Item Opcional</h4>
-
-          <Form onSubmit={handleSubmit}>
-            <Row className="mb-3">
-              <Col md={6}>
-                <Form.Group>
-                  <Form.Label>Código do Item</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="item_code"
-                    value={item.item_code}
-                    onChange={handleChange}
-                    placeholder="Ex: BAT4800"
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group>
-                  <Form.Label>Nome</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="name"
-                    value={item.name}
-                    onChange={handleChange}
-                    placeholder="Ex: Bateria Recarregável 4800mAh"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Form.Group className="mb-3">
-              <Form.Check
-                type="checkbox"
-                label="Incluir automaticamente"
-                name="include"
-                checked={item.include}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Descrição</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="Description"
-                value={item.Description}
-                onChange={handleChange}
-                placeholder="Descreva o item..."
-              />
-            </Form.Group>
-
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Preço Atual</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="Price"
-                    value={item.Price}
-                    onChange={handleChange}
-                    placeholder="Ex: 189.90"
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Button type="submit" variant="primary">
-              + Adicionar Item
-            </Button>
-
-            <hr></hr>
-            <ul className="list-unstyled">
-              {listProducts?.item_additional?.map((item, index) => (
-                <li
-                  key={item.Id_Item_additional || index}
-                  className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center border-bottom py-3 gap-2"
+                />
+                <button
+                  type="button"
+                  className="btn btn-danger position-absolute d-flex align-items-center justify-content-center"
+                  style={{
+                    top: "5px",
+                    right: "5px",
+                    borderRadius: "50%",
+                    width: "26px",
+                    height: "26px",
+                    padding: 0,
+                    lineHeight: 0,
+                  }}
+                  title="Remover imagem"
+                  onClick={() => handleDeleteImage(img)}
                 >
-                  <div className="w-100">
-                    <div className="fw-semibold">{item.name}</div>
-                    <div className="text-muted small mb-1">
-                      {item.Description}
-                    </div>
-
-                    <div className="d-flex flex-wrap gap-3 small">
-                      <span>
-                        <strong>Código:</strong> {item.item_code}
-                      </span>
-                      <span>
-                        <strong>Preço:</strong> R$ {item.Price}
-                      </span>
-                      <span>
-                        <strong>Preço Antigo:</strong> R$ {item.Old_price}
-                      </span>
-                      <span>
-                        <strong>Incluído:</strong>{" "}
-                        {item.include ? "Sim" : "Não"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
-                    style={{ width: "36px", height: "36px" }}
-                    title="Remover item"
-                    onClick={() => handleDeleteItemAdditional(item)}
-                  >
-                    <TiDelete size={18} />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </Form>
-        </Card>
-      ) : (
-        <></>
+                  <TiDelete />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
       )}
+
+      {/* Cor 
+      <Form.Group className="mb-3">
+        <Form.Label>Selecionar Cor</Form.Label>
+        <div className="d-flex align-items-center gap-3">
+          <Form.Control
+            type="color"
+            value={selectedColor}
+            onChange={(e) => setSelectedColor(e.target.value)}
+            style={{ width: "60px", height: "40px", padding: "0" }}
+          />
+
+          <Form.Control
+            type="text"
+            placeholder="Nome da cor"
+            value={colorName}
+            onChange={(e) => setColorName(e.target.value)}
+            style={{ maxWidth: "200px" }}
+          />
+
+          <Button variant="outline-secondary" onClick={handleAddColor}>
+            Adicionar
+          </Button>
+        </div>
+
+        <div className="mt-3 d-flex gap-2 flex-wrap">
+          {listColors.map((item, i) => (
+            <div
+              key={i}
+              title={item.color}
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "6px",
+                backgroundColor: item.cod_color,
+                border: "1px solid #ccc",
+              }}
+            ></div>
+          ))}
+        </div>
+      </Form.Group>
+    */}
 
       <ProductBannerForm productId={productId} />
     </div>

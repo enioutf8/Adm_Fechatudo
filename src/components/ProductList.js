@@ -13,6 +13,7 @@ import axios from "axios";
 import ProductForm from "./site/ProductForm";
 import { GlobalContext } from "../context/GlobalContext";
 import Urlmaster from "../api/urlMaster";
+import TechnicalSections from "./site/TechnicalSections";
 
 // 🎨 Estilos Customizados para Responsividade da Tabela
 // Esconde colunas menos prioritárias em telas muito pequenas
@@ -38,7 +39,13 @@ const mobileTableStyles = `
 `;
 
 const ProductList = ({ token }) => {
-  const { productEdit, setProductEdit } = useContext(GlobalContext);
+  const {
+    refreshProducList,
+    setRefreshProducList,
+    productEdit,
+    setProductEdit,
+    timed,
+  } = useContext(GlobalContext);
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -95,6 +102,7 @@ const ProductList = ({ token }) => {
       Product_Name: product.Product_Name ?? "",
       Product_Slug: product.Product_Slug ?? "",
       Unit_Discount: product.Unit_Discount ?? "0.00",
+      stock: product.stock?.[0]?.Quantity,
       id_sub_category: product.id_sub_category ?? 0,
       item_additional: product.item_additional ?? [],
     };
@@ -166,7 +174,7 @@ const ProductList = ({ token }) => {
 
     // 5️⃣ ABRE O MODAL (mantém seu fluxo)
     setSelected(product);
-    setShowModal(true);
+    setRefreshProducList(true);
     setProductEdit(true);
   };
 
@@ -175,14 +183,15 @@ const ProductList = ({ token }) => {
   const handleExitModal = async () => {
     await localStorage.removeItem("productSubmit");
     await localStorage.removeItem("technicalDataSubmit");
-    setShowModal(false);
+    setRefreshProducList(false);
     setProductEdit(false);
   };
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [timed]);
 
+  //console.log(products);
   return (
     <Container fluid className="mt-4 px-2 px-sm-3">
       {/* ⚠️ Inclusão dos Estilos Customizados */}
@@ -208,7 +217,6 @@ const ProductList = ({ token }) => {
                   <th>Categoria</th>
                   <th>Subcategoria</th>
                   <th>Preço</th>
-                  <th>Código</th>
                   <th>Ações</th>
                 </tr>
               </thead>
@@ -223,9 +231,9 @@ const ProductList = ({ token }) => {
                       <td>{product.sub_category?.label || "-"}</td>
                       {/* Preço: Visível em todas as telas */}
                       <td className="fw-bold text-success">
-                        R$ {Number(product.Price).toFixed(2)}
+                        R$ {Number(product.Price).toFixed(2).replace(".", ",")}
                       </td>
-                      <td>{product.Product_Code}</td>
+
                       {/* Ações: Usando a classe 'mobile-actions-stack' para empilhar botões em mobile */}
                       <td>
                         <div className="mobile-actions-stack">
@@ -273,7 +281,7 @@ const ProductList = ({ token }) => {
 
       {/* 🔹 Modal de Visualização */}
       <Modal
-        show={showModal}
+        show={refreshProducList}
         onHide={handleExitModal}
         centered
         fullscreen={true}
@@ -290,11 +298,6 @@ const ProductList = ({ token }) => {
             <p>Carregando...</p>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleExitModal}>
-            Fechar
-          </Button>
-        </Modal.Footer>
       </Modal>
     </Container>
   );

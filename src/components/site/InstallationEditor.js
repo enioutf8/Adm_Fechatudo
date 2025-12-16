@@ -141,6 +141,7 @@ export default function InstallationForm({ token }) {
   }, [activeTab]);
 
   const handleSelectSubCategory = async (sub) => {
+ 
     setLoad(true);
     const response = await productApi.findOnlyProduct(sub.label);
     setLoad(false);
