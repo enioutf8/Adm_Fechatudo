@@ -75,87 +75,6 @@ const TechnicalSections = ({ token }) => {
     }
   }, []);
 
-  // 🔹 Adiciona característica principal
-  const handleAddMainFacture = async () => {
-    if (!titleMainFeatures?.trim() || !valueMainFeatures?.trim()) {
-      alert(
-        "Preencha o rótulo e o valor antes de adicionar uma característica!"
-      );
-      return;
-    }
-
-    const tenc = new TechnicalSheet();
-    const reqMainFacture = {
-      Label: titleMainFeatures.trim(),
-      Value: valueMainFeatures.trim(),
-    };
-
-    try {
-      // registra no backend
-      const response = await tenc.registerMainFactureTechnicalSheet(
-        reqMainFacture,
-        token
-      );
-
-      // usa o retorno do backend se existir
-      const savedFacture = response?.data?.mainFacture ||
-        response?.mainFacture || {
-          ...reqMainFacture,
-          Main_Feature_ID: Date.now(),
-        }; // fallback com ID único
-
-      // Atualiza o estado local imediatamente (re-render)
-      setListMainFacture((prev) => [...prev, savedFacture]);
-
-      // Atualiza o localStorage
-      const productLocalRaw = localStorage.getItem("technicalDataSubmit");
-      let productLocal;
-
-      // se não existir, cria uma estrutura inicial
-      if (!productLocalRaw) {
-        productLocal = {
-          details: {
-            main_features: [savedFacture],
-          },
-        };
-      } else {
-        productLocal = JSON.parse(productLocalRaw);
-        productLocal.details = productLocal.details || {};
-        productLocal.details.main_features =
-          productLocal.details.main_features || [];
-        productLocal.details.main_features.push(savedFacture);
-      }
-
-      // salva novamente no localStorage
-      localStorage.setItem("technicalDataSubmit", JSON.stringify(productLocal));
-
-      // limpa os campos
-      setTitleMainFeatures("");
-      setValueMainFeatures("");
-    } catch (error) {
-      console.error("Erro ao adicionar característica:", error);
-      alert(
-        "Erro ao adicionar característica. Veja o console para mais detalhes."
-      );
-    }
-  };
-
-  // 🔹 Adiciona item incluído
-  const handleAddItemIncluded = async () => {
-    if (!titleItemIncluded?.trim()) {
-      alert("Digite o nome do item antes de adicioná-lo!");
-      return;
-    }
-
-    const tenc = new TechnicalSheet();
-    const reqItenIncluded = { Item: titleItemIncluded.trim() };
-
-    await tenc.registerItemIncludedTechnicalSheet(reqItenIncluded, token);
-    setListItemAdditional((prev) => [...prev, reqItenIncluded]);
-    setTitleItemIncluded("");
-  };
-
-  // 🔹 Adiciona imagem
   // 🔹 Adiciona imagem localmente
   const handleAddImage = () => {
     if (!selectedImage) {
@@ -176,28 +95,35 @@ const TechnicalSections = ({ token }) => {
     }
 
     const productLocal = JSON.parse(localStorage.getItem("productSubmit"));
-    console.log(productLocal?.data.Product_ID);
+
+    if (!productLocal?.data?.Product_ID) {
+      alert("Produto inválido");
+      return;
+    }
 
     try {
       const productApi = new Product();
 
       const formData = new FormData();
+
+      // 🔹 DADOS DO PRODUTO (ESSENCIAL)
+      formData.append("Product_ID", productLocal.data.Product_ID);
+      formData.append("Product_Code", productLocal.data.Product_Code);
+      formData.append(
+        "Product_Name",
+        productLocal.data.Product_Name || "SemNome"
+      );
+
+      // 🔹 IMAGENS
       listImages.forEach((img) => {
-        formData.append("fotos", img); // 👈 campo exigido: fotos
+        formData.append("fotos", img);
       });
 
-      console.log(formData);
-      const response = await productApi.addImgsProduct(
-        productLocal.data.Product_ID,
-        productLocal.data.Product_Code,
-        productLocal.data.Product_Name || "SemNome",
-        formData,
-        token
-      );
+      const response = await productApi.addImgsProduct(formData, token);
 
       if (response.status === 200) {
         alert("Imagens enviadas com sucesso!");
-        setListImages([]); // limpa após o envio
+        setListImages([]);
       }
     } catch (error) {
       console.error("Erro ao enviar imagens:", error);
@@ -291,173 +217,6 @@ const TechnicalSections = ({ token }) => {
       setEnvOutdoor(false);
     } catch (error) {
       console.error("Erro ao adicionar ambiente:", error);
-    }
-  };
-
-  const [item, setItem] = useState({
-    Product_ID: 0,
-    id_sub_category: 0,
-    item_code: "",
-    name: "",
-    include: false,
-    Description: "",
-    Price: "",
-    Old_price: "",
-  });
-
-  const handleChange = async (e) => {
-    const { name, value, type, checked } = e.target;
-
-    setItem((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const itemAddtitional = new ItemAdditional();
-
-    const productLocal = JSON.parse(
-      localStorage.getItem("technicalDataSubmit")
-    );
-
-    const itemCustom = {
-      Product_ID: productLocal.Product_ID,
-      id_sub_category: productLocal.id_sub_category,
-      item_code: item.item_code,
-      name: item.name,
-      include: item.include,
-      Description: item.Description,
-      Price: item.Price,
-      Old_price: 0,
-    };
-
-    await itemAddtitional.registerItemAdditional(itemCustom, token);
-    setTimed(Date.now());
-  };
-
-  const handleDeleteMainFeacture = async (mainFacture) => {
-    try {
-      if (!mainFacture) return;
-
-      if (mainFacture.Main_Feature_ID) {
-        const url = `${urlMaster.getUrlMaster().urlApi}main-factures/${
-          mainFacture.Main_Feature_ID
-        }`;
-        const response = await axios.delete(url);
-
-        if (!(response.status === 200 || response.status === 204)) {
-          console.error("Resposta inesperada do servidor:", response);
-          alert("Erro ao remover no servidor. Veja o console.");
-          return;
-        }
-      } else {
-        console.warn(
-          "Item sem Main_Feature_ID — removendo apenas localmente.",
-          mainFacture
-        );
-      }
-
-      const productLocalRaw = localStorage.getItem("technicalDataSubmit");
-      if (!productLocalRaw) {
-        console.error("Nenhum technicalDataSubmit no localStorage.");
-
-        setListMainFacture((prev) =>
-          prev.filter((item) =>
-            mainFacture.Main_Feature_ID
-              ? item.Main_Feature_ID !== mainFacture.Main_Feature_ID
-              : item.Label !== mainFacture.Label
-          )
-        );
-        return;
-      }
-
-      const productLocal = JSON.parse(productLocalRaw);
-
-      const updatedFeatures = (
-        productLocal.details?.main_features || []
-      ).filter((item) =>
-        mainFacture.Main_Feature_ID
-          ? item.Main_Feature_ID !== mainFacture.Main_Feature_ID
-          : item.Label !== mainFacture.Label
-      );
-
-      productLocal.details = productLocal.details || {};
-      productLocal.details.main_features = updatedFeatures;
-      localStorage.setItem("technicalDataSubmit", JSON.stringify(productLocal));
-
-      setListMainFacture(updatedFeatures);
-
-      alert("Característica removida com sucesso!");
-    } catch (error) {
-      console.error("Erro ao deletar característica:", error);
-      alert("Erro ao remover característica. Verifique o console.");
-    }
-  };
-
-  const handleDeleteItemIncluded = async (itemAdditional) => {
-    try {
-      console.log(itemAdditional);
-      if (!itemAdditional) return;
-
-      // 🔹 Se o item tiver ID, remove no backend
-      if (itemAdditional.Included_Item_ID) {
-        const url = `${urlMaster.getUrlMaster().urlApi}included-items/${
-          itemAdditional.Included_Item_ID
-        }`;
-        const response = await axios.delete(url);
-
-        if (!(response.status === 200 || response.status === 204)) {
-          console.error("Resposta inesperada do servidor:", response);
-          alert("Erro ao remover o item no servidor. Veja o console.");
-          return;
-        }
-      } else {
-        console.log(
-          "Item sem Included_Item_ID — removendo apenas localmente.",
-          itemAdditional
-        );
-      }
-
-      // 🔹 Atualiza o localStorage
-      const productLocalRaw = localStorage.getItem("technicalDataSubmit");
-      if (productLocalRaw) {
-        const productLocal = JSON.parse(productLocalRaw);
-
-        const updatedItems = (
-          productLocal.details?.technical_sheet?.included_items || []
-        ).filter((item) =>
-          itemAdditional.Included_Item_ID
-            ? item.Included_Item_ID !== itemAdditional.Included_Item_ID
-            : item.Item !== itemAdditional.Item
-        );
-
-        // Atualiza o objeto no localStorage
-        productLocal.details = productLocal.details || {};
-        productLocal.details.technical_sheet =
-          productLocal.details.technical_sheet || {};
-        productLocal.details.technical_sheet.included_items = updatedItems;
-
-        localStorage.setItem(
-          "technicalDataSubmit",
-          JSON.stringify(productLocal)
-        );
-      }
-
-      // 🔹 Atualiza o estado local (lista exibida)
-      setListItemAdditional((prev) =>
-        prev.filter((item) =>
-          itemAdditional.Included_Item_ID
-            ? item.Included_Item_ID !== itemAdditional.Included_Item_ID
-            : item.Item !== itemAdditional.Item
-        )
-      );
-
-      alert("Item removido com sucesso!");
-    } catch (error) {
-      console.error("Erro ao deletar item adicional:", error);
-      alert("Erro ao remover o item. Verifique o console.");
     }
   };
 
