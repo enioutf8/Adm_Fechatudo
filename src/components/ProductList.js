@@ -96,6 +96,7 @@ const ProductList = ({ token }) => {
       Description: product.Description ?? "",
       Is_Active: product.Is_Active ?? false,
       Old_price: product.Old_price ?? "0.00",
+      Id_brand: product.Id_brand,
       Price: product.Price ?? 0,
       Product_Code: product.Product_Code ?? "",
       Product_ID: product.Product_ID ?? 0,
@@ -105,6 +106,13 @@ const ProductList = ({ token }) => {
       stock: product.stock?.[0]?.Quantity,
       id_sub_category: product.id_sub_category ?? 0,
       item_additional: product.item_additional ?? [],
+      brands: {
+        Id_brand: product.brands?.Id_brand ?? null,
+        brand: product.brands?.brand ?? "",
+        color_cell: product.brands?.color_cell ?? "",
+        img_path: product.brands?.img_path ?? "",
+        url_direction: product.brands?.url_direction ?? "",
+      },
     };
 
     setProduct(productSubmitData);
@@ -191,7 +199,7 @@ const ProductList = ({ token }) => {
     fetchProducts();
   }, [timed]);
 
-  //console.log(products);
+  console.log(productEdit);
   return (
     <Container fluid className="mt-4 px-2 px-sm-3">
       {/* ⚠️ Inclusão dos Estilos Customizados */}
@@ -231,7 +239,11 @@ const ProductList = ({ token }) => {
                       <td>{product.sub_category?.label || "-"}</td>
                       {/* Preço: Visível em todas as telas */}
                       <td className="fw-bold text-success">
-                        R$ {Number(product.Price).toFixed(2).replace(".", ",")}
+                        R${" "}
+                        {Number(product.Price).toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </td>
 
                       {/* Ações: Usando a classe 'mobile-actions-stack' para empilhar botões em mobile */}

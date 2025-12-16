@@ -13,7 +13,7 @@ import TechnicalSections from "./TechnicalSections";
 Quill.register("modules/resizeImage", ResizeImage);
 
 const ProductForm = ({ product, token }) => {
-  const { setRefreshProducList, timed, setTimed, productEdit } =
+  const { setProductEdit,setRefreshProducList, timed, setTimed, productEdit } =
     useContext(GlobalContext);
   const navigate = useNavigate();
 
@@ -187,15 +187,17 @@ const ProductForm = ({ product, token }) => {
         },
       }),
     };
+
     if (productEdit) {
       const response = await productApi.editProduct(sendProductData, token);
 
       if (response) {
-        localStorage.removeItem('productSubmit')
+        localStorage.removeItem("productSubmit");
         //localStorage.setItem("productSubmit", JSON.stringify(response));
         alert("✅ Produto Editado com sucesso!");
         //const stored = localStorage.getItem("productSubmit");
         //setTimed(Date.now());
+        setProductEdit(false)
         setRefreshProducList(false);
         //if (!stored) return;
         //const savedProduct = JSON.parse(stored);
@@ -211,7 +213,7 @@ const ProductForm = ({ product, token }) => {
       if (response) {
         //localStorage.setItem("productSubmit", JSON.stringify(response));
         alert("✅ Produto salvo com sucesso!");
-        localStorage.removeItem('productSubmit')
+        localStorage.removeItem("productSubmit");
         //const stored = localStorage.getItem("productSubmit");
         //setTimed(Date.now());
         setRefreshProducList(false);
@@ -223,6 +225,12 @@ const ProductForm = ({ product, token }) => {
     }
   };
 
+  useEffect(() => {
+    if (productEdit && product?.Id_brand) {
+      setSelectedBrands(String(product.Id_brand));
+    }
+  }, [productEdit, product]);
+
   const handleFinishProduct = async () => {
     setShow(false);
     await localStorage.removeItem("productSubmit");
@@ -230,6 +238,7 @@ const ProductForm = ({ product, token }) => {
     setTimeout(() => setTimed(Date.now()), 10);
     navigate(0);
   };
+  console.log(productEdit);
 
   return (
     <div className="container mt-4">
@@ -266,8 +275,10 @@ const ProductForm = ({ product, token }) => {
               value={selectedBrands}
               onChange={(e) => handleChangeBrands(e.target.value)}
             >
+              <option value="">Selecione a marca</option>
+
               {brands.map((brand) => (
-                <option key={brand.Id_brand} value={brand.Id_brand}>
+                <option key={brand.Id_brand} value={String(brand.Id_brand)}>
                   {brand.brand}
                 </option>
               ))}
