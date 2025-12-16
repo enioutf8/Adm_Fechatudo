@@ -74,7 +74,9 @@ const TechnicalSections = ({ token }) => {
       setListProductImages(imgs);
     }
   }, []);
+ 
 
+   
   // 🔹 Adiciona imagem localmente
   const handleAddImage = () => {
     if (!selectedImage) {
@@ -95,35 +97,28 @@ const TechnicalSections = ({ token }) => {
     }
 
     const productLocal = JSON.parse(localStorage.getItem("productSubmit"));
-
-    if (!productLocal?.data?.Product_ID) {
-      alert("Produto inválido");
-      return;
-    }
+    console.log(productLocal?.data.Product_ID);
 
     try {
       const productApi = new Product();
 
       const formData = new FormData();
-
-      // 🔹 DADOS DO PRODUTO (ESSENCIAL)
-      formData.append("Product_ID", productLocal.data.Product_ID);
-      formData.append("Product_Code", productLocal.data.Product_Code);
-      formData.append(
-        "Product_Name",
-        productLocal.data.Product_Name || "SemNome"
-      );
-
-      // 🔹 IMAGENS
       listImages.forEach((img) => {
-        formData.append("fotos", img);
+        formData.append("fotos", img); // 👈 campo exigido: fotos
       });
 
-      const response = await productApi.addImgsProduct(formData, token);
+      console.log(formData);
+      const response = await productApi.addImgsProduct(
+        productLocal.data.Product_ID,
+        productLocal.data.Product_Code,
+        productLocal.data.Product_Name || "SemNome",
+        formData,
+        token
+      );
 
       if (response.status === 200) {
         alert("Imagens enviadas com sucesso!");
-        setListImages([]);
+        setListImages([]); // limpa após o envio
       }
     } catch (error) {
       console.error("Erro ao enviar imagens:", error);
@@ -220,6 +215,8 @@ const TechnicalSections = ({ token }) => {
     }
   };
 
+ 
+ 
   const handleDeleteImage = async (imgToDelete) => {
     const stored = localStorage.getItem("productSubmit");
     if (!stored) return;
