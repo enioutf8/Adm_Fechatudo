@@ -4,7 +4,6 @@ import Orders from "../../api/order";
 import "./OrderList.css";
 import Urlmaster from "../../api/urlMaster";
 export default function OrderFinished({ token }) {
-  const customURL = 'http://191.252.103.153:3000/'
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [show, setShow] = useState(false);
   const [orderApi, setOrderApi] = useState([]);
@@ -37,7 +36,7 @@ export default function OrderFinished({ token }) {
   };
 
   const handleView = (product) => {
-    const urlSite = `http://191.252.103.153:3000/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    const urlSite = `https://www.fechatudo.com.br/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
     window.open(urlSite, "_blank"); // abre em nova aba
   };
 

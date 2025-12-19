@@ -79,8 +79,8 @@ const FormMenus = ({ token }) => {
     };
 
     nas();
-  }, [timedMenusNavBar]);  
-   
+  }, [timedMenusNavBar]);
+
   const [editingSubitem, setEditingSubitem] = useState({
     menuId: null,
     oldName: null,
@@ -91,7 +91,6 @@ const FormMenus = ({ token }) => {
   // --- Funções de Edição de Menu Principal ---
 
   const handleStartEdit = (menuId) => {
-    // Ao iniciar a edição do menu principal, cancela qualquer edição de submenu
     handleCancelSubitemEdit();
     setMenus(
       menus.map((menu) =>
@@ -129,8 +128,6 @@ const FormMenus = ({ token }) => {
     setTimedMenusNavBar(Date.now());
     setNewMenuName("");
   };
-
-  // --- Funções de Edição de Subcategoria ---
 
   // Inicia a edição de um submenu
   const handleStartSubitemEdit = (menuId, subitemName, menu0) => {
@@ -191,6 +188,7 @@ const FormMenus = ({ token }) => {
         url: "",
         active: true,
       };
+
       await navBarApi.registerMenusNavbar(newMenu, token);
       setTimedMenusNavBar(Date.now());
       setNewMenuName("");
@@ -215,36 +213,25 @@ const FormMenus = ({ token }) => {
     e.preventDefault();
 
     const newLabel = newSubitemName[menu.id]?.trim();
-    if (!newLabel) return; // evita vazio
+    if (!newLabel) return;
 
-    // Novo submenu no formato esperado
-    const newSubmenu = {
-      id_layout_navbar: menu.id, // o id do menu pai
-      label: newLabel,
-      url: "",
-      active: true,
-    };
-
-    // Monta o objeto completo no padrão solicitado
-    const updatedMenu = {
+    const payload = {
       label: menu.name,
       url: "",
       active: "",
       subMenus: [
-        ...menu.submenus.map((s) => ({
+        {
           id_layout_navbar: menu.id,
-          label: s.label,
+          label: newLabel,
           url: "",
           active: true,
-        })),
-        newSubmenu,
-      ], // adiciona o novo no final
+        },
+      ],
     };
 
-    await navBarApi.registerSubMenusNavbar(updatedMenu, token);
-    setTimedMenusNavBar(Date.now());
+    await navBarApi.registerSubMenusNavbar(payload, token);
 
-    // limpa o campo de texto
+    setTimedMenusNavBar(Date.now());
     setNewSubitemName((prev) => ({ ...prev, [menu.id]: "" }));
   };
 

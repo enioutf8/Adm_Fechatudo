@@ -4,13 +4,12 @@ import Orders from "../../api/order";
 import Urlmaster from "../../api/urlMaster";
 import "./OrderList.css";
 export default function OrderList({ token }) {
-  const customURL = 'http://191.252.103.153:3000/'
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [show, setShow] = useState(false);
   const [orderApi, setOrderApi] = useState([]);
   const [timed, setTimed] = useState(Date.now());
   const allOrders = new Orders();
-  const urlMaster = new Urlmaster()
+  const urlMaster = new Urlmaster();
 
   useEffect(() => {
     const showOrdersPendent = async () => {
@@ -24,13 +23,13 @@ export default function OrderList({ token }) {
       }));
 
       setOrderApi(correctedOrders);
-      
     };
     showOrdersPendent();
   }, [timed]);
 
   const openModal = (order) => {
     setSelectedOrder(order);
+    console.log(order);
     setShow(true);
   };
   const formatDate = (dateString) => {
@@ -47,8 +46,8 @@ export default function OrderList({ token }) {
   };
 
   const handleView = (product) => {
-    const urlSite = `http://191.252.103.153:3000/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
-    window.open(urlSite, "_blank"); 
+    const urlSite = `https://www.fechatudo.com.br/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    window.open(urlSite, "_blank");
   };
 
   const finishedOrder = async (order) => {
@@ -81,7 +80,6 @@ export default function OrderList({ token }) {
 
     return phone; // fallback caso não bata o tamanho
   }
- 
 
   return (
     <div className="container py-4">
@@ -250,60 +248,35 @@ export default function OrderList({ token }) {
                             </tr>
 
                             {/* LINHA DE COMPLEMENTOS */}
-                            <tr>
-                              <td colSpan={5}>
-                                {(() => {
-                                  let complement = [];
+                            <tr className="table-light">
+                              <td colSpan={5} className="py-2 px-3">
+                                <small className="text-muted">
+                                  <strong>Solicitado:</strong>
 
-                                  try {
-                                    complement = JSON.parse(
-                                      product.complement || "[]"
-                                    );
-                                  } catch (error) {
-                                    console.error(
-                                      "Erro ao parsear complement:",
-                                      error
-                                    );
-                                  }
-
-                                  const itensAdditional = complement
-                                    .filter((item) => item.itensAdditional)
-                                    .map((i) => i.itensAdditional);
-
-                                  const color = complement.find(
-                                    (item) => item.color
-                                  )?.color;
-                                  const environment = complement.find(
-                                    (item) => item.environment
-                                  )?.environment;
-
-                                  return (
-                                    <>
-                                      {/* Cor e Ambiente */}
-                                      <div>
-                                        Cor e ambiente:{" "}
-                                        {color ? color.name : "Padrão"} |{" "}
-                                        {environment
-                                          ? environment.name
-                                          : "Padrão"}
-                                      </div>
-
-                                      <br />
-
-                                      {/* Exibir itens adicionais SOMENTE SE EXISTIREM */}
-                                      {itensAdditional.length > 0 && (
-                                        <div>
-                                          Itens adicionais:
-                                          {itensAdditional.map(
-                                            (item, index) => (
-                                              <div key={index}>{item.name}</div>
-                                            )
+                                  {product.complement ? (
+                                    JSON.parse(product.complement).map(
+                                      (comp, index) => (
+                                        <div key={index} className="mt-1">
+                                          • {comp.title}
+                                          {comp.price && (
+                                            <>
+                                              {" "}
+                                              —{" "}
+                                              <strong>
+                                                R${" "}
+                                                {Number(comp.price)
+                                                  .toFixed(2)
+                                                  .replace(".", ",")}
+                                              </strong>
+                                            </>
                                           )}
                                         </div>
-                                      )}
-                                    </>
-                                  );
-                                })()}
+                                      )
+                                    )
+                                  ) : (
+                                    <div>Nenhuma observação para este item</div>
+                                  )}
+                                </small>
                               </td>
                             </tr>
                           </tbody>

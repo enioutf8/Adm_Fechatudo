@@ -1,9 +1,7 @@
 export default class Urlmaster {
   getUrlMaster() {
-    //const urlApi = "http://localhost:3000/api/";
-    //const urlSite = "http://localhost:3000/";
-    const urlApi = "/api/";
-    const urlSite = "/auth/";
+    const urlApi = "https://fechatudo.com.br/api/";
+    const urlSite = "https://fechatudo.com.br/";
     return { urlApi, urlSite };
   }
 }

@@ -13,7 +13,7 @@ import TechnicalSections from "./TechnicalSections";
 Quill.register("modules/resizeImage", ResizeImage);
 
 const ProductForm = ({ product, token }) => {
-  const { setProductEdit,setRefreshProducList, timed, setTimed, productEdit } =
+  const { setProductEdit, setRefreshProducList, timed, setTimed, productEdit } =
     useContext(GlobalContext);
   const navigate = useNavigate();
 
@@ -53,9 +53,7 @@ const ProductForm = ({ product, token }) => {
     "image",
     "video",
   ];
-  const defaultTableHTML = `
-  <p><strong style="color: rgb(68, 68, 68);">Modelo:</strong><span style="color: rgb(68, 68, 68);"> </span><span style="color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);">MFR 1001</span></p><p><strong style="color: rgb(68, 68, 68); background-color: rgba(0, 0, 0, 0);">Material: </strong><span style="color: rgb(68, 68, 68);"> Aço Escovado</span></p><p><strong style="color: rgb(68, 68, 68); background-color: rgb(251, 251, 251);">Espessura da Porta: </strong><span style="color: rgb(68, 68, 68);"> </span><span style="color: rgb(68, 68, 68); background-color: rgb(251, 251, 251);">25 a 50 mm</span></p><p><strong style="color: rgb(68, 68, 68); background-color: rgba(0, 0, 0, 0);">Garantia: </strong><span style="color: rgb(68, 68, 68);"> </span><span style="color: rgb(68, 68, 68); background-color: rgba(0, 0, 0, 0);">1 ano (incluindo 90 dias previstos)</span></p>
- `;
+  const defaultTableHTML = ``;
 
   const categoryApi = new Category();
   const productApi = new Product();
@@ -94,11 +92,13 @@ const ProductForm = ({ product, token }) => {
         if (data.length > 0) {
           setCategories(data);
 
-          setSelectedCategory(data[0].id_category);
-          setSubCategories(data[0].sub_category || []);
-          setSubCategoriesChange(
-            data[0].sub_category?.[0]?.id_sub_category || ""
-          );
+          if (!productEdit) {
+            setSelectedCategory(String(data[0].id_category));
+            setSubCategories(data[0].sub_category || []);
+            setSubCategoriesChange(
+              String(data[0].sub_category?.[0]?.id_sub_category || "")
+            );
+          }
         }
       } catch (error) {
         console.error("Erro ao carregar categorias:", error);
@@ -162,6 +162,24 @@ const ProductForm = ({ product, token }) => {
     setProductActive(e.target.checked);
   };
 
+  useEffect(() => {
+    if (!productEdit || !product?.id_sub_category || categories.length === 0) {
+      return;
+    }
+
+    const subId = String(product.id_sub_category);
+
+    const categoryFound = categories.find((cat) =>
+      cat.sub_category?.some((sub) => String(sub.id_sub_category) === subId)
+    );
+
+    if (!categoryFound) return;
+
+    setSelectedCategory(String(categoryFound.id_category));
+    setSubCategories(categoryFound.sub_category);
+    setSubCategoriesChange(subId);
+  }, [productEdit, product, categories]);
+
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
 
@@ -197,7 +215,7 @@ const ProductForm = ({ product, token }) => {
         alert("✅ Produto Editado com sucesso!");
         //const stored = localStorage.getItem("productSubmit");
         //setTimed(Date.now());
-        setProductEdit(false)
+        setProductEdit(false);
         setRefreshProducList(false);
         //if (!stored) return;
         //const savedProduct = JSON.parse(stored);
@@ -214,6 +232,11 @@ const ProductForm = ({ product, token }) => {
         //localStorage.setItem("productSubmit", JSON.stringify(response));
         alert("✅ Produto salvo com sucesso!");
         localStorage.removeItem("productSubmit");
+        setProductName("");
+        setProductDescription("");
+        setProductPrice("");
+        setProductDiscount("");
+        setProductStock("");
         //const stored = localStorage.getItem("productSubmit");
         //setTimed(Date.now());
         setRefreshProducList(false);
@@ -230,15 +253,6 @@ const ProductForm = ({ product, token }) => {
       setSelectedBrands(String(product.Id_brand));
     }
   }, [productEdit, product]);
-
-  const handleFinishProduct = async () => {
-    setShow(false);
-    await localStorage.removeItem("productSubmit");
-    await localStorage.removeItem("technicalDataSubmit");
-    setTimeout(() => setTimed(Date.now()), 10);
-    navigate(0);
-  };
-  console.log(productEdit);
 
   return (
     <div className="container mt-4">
@@ -296,7 +310,7 @@ const ProductForm = ({ product, token }) => {
               {subCategories.map((subCate) => (
                 <option
                   key={subCate.id_sub_category}
-                  value={subCate.id_sub_category}
+                  value={String(subCate.id_sub_category)}
                 >
                   {subCate.label}
                 </option>

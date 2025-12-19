@@ -67,7 +67,6 @@ const ProductList = ({ token }) => {
 
   // 🔹 Excluir produto
   const handleDelete = async (id) => {
-    console.log(id);
     if (window.confirm("Tem certeza que deseja excluir este produto?")) {
       try {
         await axios.delete(
@@ -84,7 +83,7 @@ const ProductList = ({ token }) => {
 
   // 🔹 Visualizar produto
   const handleView = (product) => {
-    const urlSite = `http://191.252.103.153/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
+    const urlSite = `https://www.fechatudo.com.br/produto/${product.id_sub_category}/${product.Product_Slug}-${product.Product_ID}`;
     window.open(urlSite, "_blank"); // abre em nova aba
   };
 
@@ -217,7 +216,7 @@ const ProductList = ({ token }) => {
               bordered
               hover
               responsive="sm"
-              className="align-middle text-center"
+              className="align-middle "
             >
               <thead className="table-dark">
                 <tr>
@@ -250,7 +249,7 @@ const ProductList = ({ token }) => {
                       <td>
                         <div className="mobile-actions-stack">
                           <Button
-                            variant="secondary"
+                            variant="outline-secondary"
                             size="sm"
                             onClick={() => handleView(product)}
                             className="w-100" // w-100 força a largura total em todas as telas
@@ -265,7 +264,9 @@ const ProductList = ({ token }) => {
                           >
                             Editar
                           </Button>
-                          <Button
+
+                          {/* 
+                            <Button
                             variant="danger"
                             size="sm"
                             onClick={() => handleDelete(product.Product_ID)}
@@ -273,6 +274,7 @@ const ProductList = ({ token }) => {
                           >
                             Excluir
                           </Button>
+                          */}
                         </div>
                       </td>
                     </tr>

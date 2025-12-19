@@ -17,9 +17,7 @@ export default class MenusNavBar extends Urlmaster {
     } catch (error) {
       if (error?.response?.status === 401 && !sessionExpiredHandled) {
         sessionExpiredHandled = true;
-
         alert("Sua sessão expirou. Você será redirecionado.");
-
         window.location.href = "/";
       }
 
