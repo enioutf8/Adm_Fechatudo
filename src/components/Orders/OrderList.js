@@ -223,7 +223,7 @@ export default function OrderList({ token }) {
                                   .replace(".", ",")}
                               </td>
 
-                              {/* Desconto */}
+                              
                               <td>{product.products.Unit_Discount}</td>
 
                               {/* Preço com desconto */}
