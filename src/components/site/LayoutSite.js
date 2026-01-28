@@ -6,6 +6,7 @@ import SubCategoryItemLayout from "./SubCategoryItemLayout";
 import SubCategoryLayout from "./SubCategoryLayout";
 import InstitutionalTextsCRUD from "./InstitutionalTextsCRUD";
 import LayoutFooterCRUD from "./LayoutFooterCRUD";
+import EnviromentEditorLayout from "./EnviromentEditorLayout";
 
 const LayoutSite = ({ submenu, token }) => {
   return (
@@ -15,6 +16,9 @@ const LayoutSite = ({ submenu, token }) => {
       {submenu === "Sub Categorias" && <SubCategoryItemLayout token={token} />}
       {submenu === "Subcategorias Navegação" && (
         <SubCategoryLayout token={token} />
+      )}
+      {submenu === "Ambiente Seleção" && (
+        <EnviromentEditorLayout token={token} />
       )}
       {submenu === "Institucional" && <InstitutionalTextsCRUD token={token} />}
       {submenu === "Rodapé" && <LayoutFooterCRUD token={token} />}

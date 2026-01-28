@@ -29,7 +29,6 @@ export default function OrderList({ token }) {
 
   const openModal = (order) => {
     setSelectedOrder(order);
-    console.log(order);
     setShow(true);
   };
   const formatDate = (dateString) => {
@@ -223,9 +222,7 @@ export default function OrderList({ token }) {
                                   .replace(".", ",")}
                               </td>
 
-                              
                               <td>{product.products.Unit_Discount}</td>
-
                               {/* Preço com desconto */}
                               <td>
                                 {(() => {

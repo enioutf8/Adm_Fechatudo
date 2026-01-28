@@ -327,6 +327,7 @@ const ProductForm = ({ product, token }) => {
             >
               <option value={1}>{"Interno"}</option>
               <option value={2}>{"Externo"}</option>
+              <option value={3}>{"Todos"}</option>
             </select>
           </div>
 

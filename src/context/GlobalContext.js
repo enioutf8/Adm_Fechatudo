@@ -86,7 +86,11 @@ export const GlobalContextProvider = ({ children }) => {
           label: "Subcategorias Navegação",
           link: "/admin/layout/navegation",
         },
-
+        {
+          id: 596,
+          label: "Ambiente Seleção",
+          link: "/admin/layout/environment",
+        },
         {
           id: 54,
           label: "Institucional",
