@@ -1,18 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { GlobalContextProvider } from "./context/GlobalContext";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/tokens.css';
+import './styles/app.css';
+import './styles/extra.css';
+import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <GlobalContextProvider>
-      <App />
-    </GlobalContextProvider>
+    <App />
   </React.StrictMode>
 );
-
-reportWebVitals();

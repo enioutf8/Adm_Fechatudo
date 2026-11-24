@@ -1,0 +1,72 @@
+/* Complementos do admin Fechatudo (mesma linguagem visual de tokens.css/app.css) */
+
+/* Menu lateral agrupado */
+.sbar-sec { margin: 12px 12px 4px; font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #6b7280; }
+.sbar-sec:first-child { margin-top: 2px; }
+
+/* "Ver site" na barra do topo */
+.tbar-site { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 600; font-size: .85rem; }
+.tbar-site:hover { border-color: var(--ink); color: var(--ink); }
+@media (max-width: 575.98px) { .tbar-site { display: none; } }
+
+/* Miniaturas */
+.thumb { border-radius: 8px; border: 1px solid var(--line); background: #fff; display: inline-flex; flex: 0 0 auto; }
+.thumb-empty { align-items: center; justify-content: center; color: #cbd5e1; font-size: 1.2rem; background: var(--bg); }
+.cell-prod { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.cell-prod strong { display: block; }
+.cell-prod small { color: var(--muted); }
+
+/* Escolha de imagem com prévia */
+.ip { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 12px; }
+.ip-prev { width: 100%; border: 1px dashed var(--line); border-radius: 10px; background: var(--bg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.ip-prev img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.ip-prev .muted { display: inline-flex; align-items: center; gap: 6px; }
+
+/* Editor de texto rico */
+.rte { margin-bottom: 12px; }
+.rte .ql-toolbar { border-radius: 10px 10px 0 0; border-color: var(--line) !important; background: var(--bg); }
+.rte .ql-container { border-radius: 0 0 10px 10px; border-color: var(--line) !important; min-height: var(--rte-h, 260px); font-family: var(--font); font-size: 14px; }
+.rte .ql-editor { min-height: var(--rte-h, 260px); }
+
+/* Galeria de fotos do produto */
+.gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+.gal-item { position: relative; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; aspect-ratio: 1; }
+.gal-item img { width: 100%; height: 100%; object-fit: contain; }
+.gal-item .btn-icon { position: absolute; top: 6px; right: 6px; background: rgba(255,255,255,.92); }
+.gal-item .gal-tag { position: absolute; left: 6px; bottom: 6px; background: var(--ink); color: var(--brand); font-size: .7rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+
+/* Lista editável (características, itens, rodapé) */
+.elist { display: flex; flex-direction: column; gap: 8px; }
+.elist-row { display: flex; gap: 8px; align-items: center; }
+.elist-row input, .elist-row select { border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; flex: 1; min-width: 0; }
+.elist-row input:focus { outline: none; border-color: var(--ink); }
+
+/* iSales: comparação lado a lado */
+.cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cmp-side { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: #fff; }
+.cmp-side h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 0 8px; }
+.cmp-img { width: 100%; height: 180px; object-fit: contain; background: var(--bg); border-radius: 8px; }
+.isl { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.isl-card { border: 1px solid var(--line); border-radius: 12px; padding: 10px; background: #fff; display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.isl-card:hover { border-color: var(--ink); }
+.isl-card img, .isl-card .thumb { width: 100%; height: 130px; object-fit: contain; background: var(--bg); border-radius: 8px; }
+.isl-card strong { font-size: .85rem; line-height: 1.25; }
+.isl-card small { color: var(--muted); }
+@media (max-width: 991.98px) { .cmp { grid-template-columns: 1fr; } }
+
+/* Etapas do pedido */
+.steps { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 14px; }
+.step { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--bg); color: var(--muted); font-size: .8rem; font-weight: 600; }
+.step-done { background: var(--ok-bg); color: var(--ok); }
+
+/* Diversos */
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.row-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: nowrap; }
+.mb-0 { margin-bottom: 0 !important; }
+.w-100 { width: 100%; }
+.text-ok { color: var(--ok); }
+.text-warn { color: var(--warn); }
+.text-danger { color: var(--danger); }
+.dl-grid { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; }
+.dl-grid dt { color: var(--muted); font-weight: 500; }
+.dl-grid dd { margin: 0; font-weight: 600; }
