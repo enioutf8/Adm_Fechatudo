@@ -70,3 +70,10 @@
 .dl-grid { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; }
 .dl-grid dt { color: var(--muted); font-weight: 500; }
 .dl-grid dd { margin: 0; font-weight: 600; }
+
+/* Barra de rolagem do menu lateral: bem fina e amarela */
+.sbar nav { scrollbar-width: thin; scrollbar-color: var(--brand) transparent; }
+.sbar nav::-webkit-scrollbar { width: 4px; }
+.sbar nav::-webkit-scrollbar-track { background: transparent; }
+.sbar nav::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 999px; }
+.sbar nav::-webkit-scrollbar-thumb:hover { background: var(--brand-strong); }
