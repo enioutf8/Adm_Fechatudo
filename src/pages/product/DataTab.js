@@ -96,12 +96,12 @@ const DataTab = ({ product, onSaved }) => {
 
             {linked && (
                 <div className='alert-info'>
-                    Preço e estoque vêm do iSales (produto #{product.isales_id}) e são atualizados automaticamente.
-                    Para mudar, altere no iSales ou na aba <strong>Preço e estoque</strong>.
+                    Preço e estoque vêm do iSales - Api (produto #{product.isales_id}) e são atualizados automaticamente.
+                    Para mudar, altere no iSales - Api ou na aba <strong>Preço e estoque</strong>.
                 </div>
             )}
             {!linked && !isService && product && (
-                <div className='alert-warn'>Sem vínculo com o iSales: o site mostra "Avise-me quando chegar" no lugar do preço. Vincule na aba <strong>Preço e estoque</strong>.</div>
+                <div className='alert-warn'>Sem vínculo com o iSales - Api: o site mostra "Avise-me quando chegar" no lugar do preço. Vincule na aba <strong>Preço e estoque</strong>.</div>
             )}
             <div className='form-row'>
                 <Field label="Preço (R$)" hint={linked ? `Atual: ${money(product.Price)}` : undefined}>

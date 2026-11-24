@@ -49,7 +49,7 @@ const Products = () => {
 
     return (
         <>
-            <PageHeader title="Produtos" subtitle="Catálogo do site. Preço e estoque dos produtos vinculados vêm do iSales.">
+            <PageHeader title="Produtos" subtitle="Catálogo do site. Preço e estoque dos produtos vinculados vêm do iSales - Api.">
                 <button type="button" className='btn-primary' onClick={() => go('/produtos/novo')}><BsPlusLg /> Novo produto</button>
             </PageHeader>
             <div className='filters'>
@@ -64,7 +64,7 @@ const Products = () => {
                 </select>
                 <select value={flag} onChange={(e) => set({ filtro: e.target.value })} aria-label="Situação">
                     <option value="">Todas as situações</option>
-                    <option value="sem-isales">Sem vínculo com iSales (sem preço no site)</option>
+                    <option value="sem-isales">Sem vínculo com iSales - Api (sem preço no site)</option>
                     <option value="sem-estoque">Sem estoque</option>
                     <option value="sem-foto">Sem foto</option>
                     <option value="inativos">Inativos</option>
@@ -74,7 +74,7 @@ const Products = () => {
                 <div className='card card-flush'>
                     <div className='tbl-wrap'>
                         <table className='tbl tbl-hover'>
-                            <thead><tr><th>Produto</th><th>Categoria</th><th className='r'>Preço</th><th className='r'>Estoque</th><th>iSales</th><th /></tr></thead>
+                            <thead><tr><th>Produto</th><th>Categoria</th><th className='r'>Preço</th><th className='r'>Estoque</th><th>iSales - Api</th><th /></tr></thead>
                             <tbody>
                                 {loading ? <SkeletonRows cols={6} /> : shown.map((p) => (
                                     <tr key={p.Product_ID} className='row-cursor' onClick={() => go(`/produtos/${p.Product_ID}`)}>
@@ -88,7 +88,7 @@ const Products = () => {
                                             </div>
                                         </td>
                                         <td>{p.category}<br /><small className='muted'>{p.sub_category}</small></td>
-                                        <td className='r nowrap'>{p.isales_id || p.category === 'Serviços' ? money(p.Price) : <span className='muted' title="Sem vínculo com o iSales: o site não mostra preço">—</span>}</td>
+                                        <td className='r nowrap'>{p.isales_id || p.category === 'Serviços' ? money(p.Price) : <span className='muted' title="Sem vínculo com o iSales - Api: o site não mostra preço">—</span>}</td>
                                         <td className='r'>{p.isales_id ? <span className={Number(p.Quantity) > 0 ? 'stock-ok' : 'stock-no'}>{Math.max(0, Number(p.Quantity) || 0)}</span> : <span className='muted'>—</span>}</td>
                                         <td>{p.isales_id ? <span className='pill pill-1'>#{p.isales_id}</span> : <span className='pill pill-warn'>Sem vínculo</span>}</td>
                                         <td className='r' onClick={(e) => e.stopPropagation()}>

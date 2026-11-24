@@ -19,7 +19,7 @@ const TABS = [
     { key: 'fotos', label: 'Fotos, vídeos e banners' },
     { key: 'especificacoes', label: 'Especificações' },
     { key: 'instalacoes', label: 'Instalações' },
-    { key: 'isales', label: 'Preço e estoque (iSales)' },
+    { key: 'isales', label: 'Preço e estoque (iSales - Api)' },
 ];
 
 const ProductEdit = () => {

@@ -23,7 +23,7 @@ const NAV = [
     { to: '/categorias', label: 'Categorias', icon: BsDiagram3 },
     { to: '/marcas', label: 'Marcas', icon: BsTag },
     { to: '/instalacoes', label: 'Instalações', icon: BsTools },
-    { to: '/isales', label: 'iSales', icon: BsArrowRepeat, badge: (r) => r?.semIsales },
+    { to: '/isales', label: 'iSales - Api', icon: BsArrowRepeat, badge: (r) => r?.semIsales },
     { section: 'Site' },
     { to: '/layout/banners', label: 'Banners e logo', icon: BsImages },
     { to: '/layout/menu', label: 'Menu', icon: BsMenuButtonWide },

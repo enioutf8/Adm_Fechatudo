@@ -6,7 +6,7 @@ import { BsArrowLeft } from 'react-icons/bs';
 const MENUS = [
     ['/painel', 'Painel'], ['/pedidos', 'Pedidos'], ['/clientes', 'Clientes'], ['/produtos', 'Produtos'],
     ['/instalacoes', 'Instalações'], ['/categorias', 'Categorias'], ['/marcas', 'Marcas'], ['/layout', 'Aparência do site'],
-    ['/institucional', 'Institucional'], ['/isales', 'iSales'], ['/avisos-estoque', 'Avisos de estoque'], ['/conta', 'Minha conta'],
+    ['/institucional', 'Institucional'], ['/isales', 'iSales - Api'], ['/avisos-estoque', 'Avisos de estoque'], ['/conta', 'Minha conta'],
 ];
 export const menuLabel = (pathname) => (MENUS.find(([p]) => pathname.startsWith(p)) || [null, 'a tela anterior'])[1];
 

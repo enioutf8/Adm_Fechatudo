@@ -49,7 +49,7 @@ const IsalesLinker = ({ product, onChange }) => {
         setCurrent(null);
         if (!product.isales_id) return undefined;
         api.isalesItem(product.isales_id).then((list) => {
-            if (alive) setCurrent(list?.[0] || { id: product.isales_id, name: `Produto #${product.isales_id} (não encontrado no iSales)` });
+            if (alive) setCurrent(list?.[0] || { id: product.isales_id, name: `Produto #${product.isales_id} (não encontrado no iSales - Api)` });
         }).catch(() => alive && setCurrent({ id: product.isales_id, name: `Produto #${product.isales_id}` }));
         return () => { alive = false; };
     }, [product.isales_id]);
@@ -76,7 +76,7 @@ const IsalesLinker = ({ product, onChange }) => {
                     <small className='muted'>#{product.Product_ID}</small>
                 </div>
                 <div className='cmp-side'>
-                    <h3>No iSales</h3>
+                    <h3>No iSales - Api</h3>
                     {product.isales_id ? (
                         current ? (
                             <>
@@ -87,14 +87,14 @@ const IsalesLinker = ({ product, onChange }) => {
                                 <button type="button" className='btn-danger-ghost btn-sm mt-2' disabled={busy} onClick={() => setConfirm('unlink')}><BsXLg /> Remover vínculo</button>
                             </>
                         ) : <Skeleton h={180} />
-                    ) : <EmptyState title="Sem vínculo" text="Escolha abaixo o produto correspondente no iSales. Sem vínculo, o site não mostra preço." />}
+                    ) : <EmptyState title="Sem vínculo" text="Escolha abaixo o produto correspondente no iSales - Api. Sem vínculo, o site não mostra preço." />}
                 </div>
             </div>
 
             <div>
                 <div className='filters'>
-                    <SearchInput value={q} onChange={setQ} placeholder="Buscar no iSales por nome, modelo, marca ou código" />
-                    <button type="button" className='btn-ghost btn-sm' onClick={() => api.isalesCatalog(q, true).then(setResults)} title="Recarregar catálogo do iSales"><BsArrowRepeat /> Atualizar</button>
+                    <SearchInput value={q} onChange={setQ} placeholder="Buscar no iSales - Api por nome, modelo, marca ou código" />
+                    <button type="button" className='btn-ghost btn-sm' onClick={() => api.isalesCatalog(q, true).then(setResults)} title="Recarregar catálogo do iSales - Api"><BsArrowRepeat /> Atualizar</button>
                 </div>
                 {error && <div className='alert-err'>{error}</div>}
                 {loading && !results ? <Skeleton h={160} /> : shown.length ? (
@@ -103,19 +103,19 @@ const IsalesLinker = ({ product, onChange }) => {
                     </div>
                 ) : (results || []).length ? (
                     <p className='muted'>O único resultado desta busca já é o item vinculado. Busque outro termo para trocar o vínculo.</p>
-                ) : <EmptyState title="Nada encontrado no iSales" text="Tente o modelo (ex.: FR 102), a marca ou o código de barras." />}
+                ) : <EmptyState title="Nada encontrado no iSales - Api" text="Tente o modelo (ex.: FR 102), a marca ou o código de barras." />}
             </div>
 
-            <ConfirmDialog show={!!confirm && confirm !== 'unlink'} title="Vincular ao iSales?" confirmLabel="Vincular" busy={busy}
+            <ConfirmDialog show={!!confirm && confirm !== 'unlink'} title="Vincular ao iSales - Api?" confirmLabel="Vincular" busy={busy}
                 onCancel={() => setConfirm(null)} onConfirm={link}>
                 {confirm && confirm !== 'unlink' && (
                     <>
                         <div className='cmp'>
                             <div className='cmp-side'><h3>Site</h3>{sitePhoto && <img className='cmp-img' src={assetUrl(sitePhoto)} alt="" />}<small>{product.Product_Name}</small></div>
-                            <div className='cmp-side'><h3>iSales</h3>{confirm.picture && <img className='cmp-img' src={confirm.picture} alt="" />}<small>{confirm.name}</small></div>
+                            <div className='cmp-side'><h3>iSales - Api</h3>{confirm.picture && <img className='cmp-img' src={confirm.picture} alt="" />}<small>{confirm.name}</small></div>
                         </div>
                         <p className='mt-3'>O preço passa a ser <strong>{money(confirm.price)}</strong> e o estoque <strong>{Math.max(0, Number(confirm.stock) || 0)}</strong>, atualizados automaticamente.</p>
-                        {confirm.linkedCount > 0 && <p className='text-warn'>Este item do iSales já está vinculado a {confirm.linkedCount} produto(s) do site — eles vão dividir o mesmo estoque.</p>}
+                        {confirm.linkedCount > 0 && <p className='text-warn'>Este item do iSales - Api já está vinculado a {confirm.linkedCount} produto(s) do site — eles vão dividir o mesmo estoque.</p>}
                     </>
                 )}
             </ConfirmDialog>

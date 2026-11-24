@@ -43,18 +43,18 @@ const SheetTab = ({ product, reload }) => {
             <p className='muted'>Aparecem logo abaixo da marca, na página do produto. Campos vazios não são exibidos.</p>
             {linked && (
                 <div className='alert-info'>
-                    Este produto tem vínculo com o iSales: <strong>cor, tamanho, garantia, EAN e informações adicionais</strong> são atualizados
-                    pelo iSales a cada sincronização. Altere esses dados no iSales para que não voltem ao valor de lá.
+                    Este produto tem vínculo com o iSales - Api: <strong>cor, tamanho, garantia, EAN e informações adicionais</strong> são atualizados
+                    pelo iSales - Api a cada sincronização. Altere esses dados no iSales - Api para que não voltem ao valor de lá.
                 </div>
             )}
             <div className='form-row'>
                 {FIELDS.map((x) => (
-                    <Field key={x.k} label={`${x.l}${linked && x.isales ? ' · iSales' : ''}`} hint={x.hint}>
+                    <Field key={x.k} label={`${x.l}${linked && x.isales ? ' · iSales - Api' : ''}`} hint={x.hint}>
                         <input value={f[x.k] ?? ''} inputMode={x.num ? 'decimal' : undefined} onChange={(e) => setF({ ...f, [x.k]: e.target.value })} />
                     </Field>
                 ))}
             </div>
-            <Field label={`Informações adicionais${linked ? ' · iSales' : ''}`} hint="Texto simples, exibido num cartão abaixo dos detalhes do produto">
+            <Field label={`Informações adicionais${linked ? ' · iSales - Api' : ''}`} hint="Texto simples, exibido num cartão abaixo dos detalhes do produto">
                 <textarea rows={6} value={f.Additional_Info ?? ''} onChange={(e) => setF({ ...f, Additional_Info: e.target.value })} />
             </Field>
             <button type="submit" className='btn-primary' disabled={busy || !changed.length}>{busy ? 'Salvando…' : 'Salvar especificações'}</button>

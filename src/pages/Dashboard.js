@@ -53,7 +53,7 @@ const Dashboard = () => {
 
                 <section className='card'>
                     <div className='card-head'>
-                        <h2>Preço e estoque (iSales)</h2>
+                        <h2>Preço e estoque (iSales - Api)</h2>
                         <Link to="/isales" className='btn-link'>Abrir</Link>
                     </div>
                     {loading ? <Skeleton h={120} /> : (

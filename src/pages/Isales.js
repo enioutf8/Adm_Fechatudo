@@ -28,12 +28,12 @@ const Isales = () => {
 
     return (
         <>
-            <PageHeader title="iSales" subtitle="Preço, estoque e especificações dos produtos vêm do iSales. Aqui você liga cada produto do site ao item correspondente.">
+            <PageHeader title="iSales - Api" subtitle="Preço, estoque e especificações dos produtos vêm do iSales - Api. Aqui você liga cada produto do site ao item correspondente.">
                 <button type="button" className='btn-primary' onClick={sync} disabled={busy}><BsArrowRepeat /> {busy ? 'Sincronizando…' : 'Sincronizar agora'}</button>
             </PageHeader>
 
             <div className='kpis'>
-                <KpiCard label="Vinculados" value={s.linked ?? '…'} hint="com preço e estoque do iSales" />
+                <KpiCard label="Vinculados" value={s.linked ?? '…'} hint="com preço e estoque do iSales - Api" />
                 <KpiCard label="Sem vínculo" value={s.unlinked ?? '…'} hint="aparecem sem preço no site" tone={s.unlinked ? 'warn' : undefined} />
                 <KpiCard label="Sincronização automática" value={s.syncEnabled ? `a cada ${s.syncMinutes} min` : 'Desligada'}
                     hint={s.syncEnabled ? 'ligada no servidor' : 'ligue com ISALES_SYNC_ENABLED=true no .env do servidor'} tone={s.syncEnabled ? undefined : 'warn'} />
@@ -51,7 +51,7 @@ const Isales = () => {
                 <div className='card card-flush'>
                     <div className='tbl-wrap'>
                         <table className='tbl tbl-hover'>
-                            <thead><tr><th>Produto do site</th><th>{tab === 'vinculados' ? 'Item do iSales' : 'Categoria'}</th><th className='r'>Preço</th><th className='r'>Estoque</th><th /></tr></thead>
+                            <thead><tr><th>Produto do site</th><th>{tab === 'vinculados' ? 'Item do iSales - Api' : 'Categoria'}</th><th className='r'>Preço</th><th className='r'>Estoque</th><th /></tr></thead>
                             <tbody>
                                 {loading ? <SkeletonRows cols={5} /> : (data || []).map((p) => (
                                     <React.Fragment key={p.Product_ID}>
@@ -63,7 +63,7 @@ const Isales = () => {
                                                 </div>
                                             </td>
                                             <td>{tab === 'vinculados'
-                                                ? (p.isales ? <><span>{p.isales.name}</span><br /><small className='muted'>#{p.isales.id} · {p.isales.ean}</small></> : <span className='text-danger'>#{p.isales_id} não encontrado no iSales</span>)
+                                                ? (p.isales ? <><span>{p.isales.name}</span><br /><small className='muted'>#{p.isales.id} · {p.isales.ean}</small></> : <span className='text-danger'>#{p.isales_id} não encontrado no iSales - Api</span>)
                                                 : p.sub_category}</td>
                                             <td className='r'>{tab === 'vinculados' ? money(p.Price) : <span className='muted'>—</span>}</td>
                                             <td className='r'>{tab === 'vinculados' ? <span className={Number(p.Quantity) > 0 ? 'stock-ok' : 'stock-no'}>{Math.max(0, Number(p.Quantity) || 0)}</span> : <span className='muted'>—</span>}</td>
