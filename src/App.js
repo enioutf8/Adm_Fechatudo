@@ -22,10 +22,10 @@ import Footer from './pages/layout/Footer';
 import Institutional from './pages/Institutional';
 import Account from './pages/Account';
 
-// Rotas do admin (publicado em /corporativo). Tudo dentro de <Layout> exige login.
+// Rotas do admin. Na Vercel fica na raiz do domínio; no servidor do site, em /corporativo (PUBLIC_URL). Tudo dentro de <Layout> exige login.
 function App() {
   return (
-    <BrowserRouter basename="/corporativo">
+    <BrowserRouter basename={process.env.PUBLIC_URL || undefined}>
       <AuthProvider>
         <ToastProvider>
           <Routes>
