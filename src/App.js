@@ -22,6 +22,7 @@ import Footer from './pages/layout/Footer';
 import Institutional from './pages/Institutional';
 import Account from './pages/Account';
 import ErrorLog from './pages/ErrorLog';
+import Replenishment from './pages/Replenishment';
 
 // Rotas do admin. Na Vercel fica na raiz do domínio; no servidor do site, em /corporativo (PUBLIC_URL). Tudo dentro de <Layout> exige login.
 function App() {
@@ -45,6 +46,7 @@ function App() {
               <Route path="/marcas" element={<Brands />} />
               <Route path="/instalacoes" element={<Installations />} />
               <Route path="/isales" element={<Isales />} />
+              <Route path="/reposicao" element={<Replenishment />} />
               <Route path="/layout/banners" element={<Banners />} />
               <Route path="/layout/menu" element={<Menu />} />
               <Route path="/layout/vitrines" element={<Showcases />} />

@@ -14,6 +14,10 @@ const suggestQuery = (name) => String(name || '')
     .slice(0, 3)
     .join(' ');
 
+// Textos dos códigos do iSales (o que não estiver aqui aparece como veio)
+const ORIGIN = { DOMESTIC: 'Nacional', IMPORTED: 'Importado', FOREIGN: 'Estrangeiro' };
+const TAX = { MANUAL: 'Manual', INTEGRATION: 'Por integração', AUTOMATIC: 'Automática' };
+
 const IsalesCard = ({ item, onPick, current }) => (
     <button type="button" className='isl-card' onClick={onPick ? () => onPick(item) : undefined} disabled={!onPick}>
         {item.picture ? <img src={item.picture} alt="" loading="lazy" /> : <span className='thumb thumb-empty' />}
@@ -84,6 +88,17 @@ const IsalesLinker = ({ product, onChange }) => {
                                 <strong className='d-block mt-2'>{current.name}</strong>
                                 <small className='muted d-block'>#{current.id} · {current.ean}</small>
                                 <small className='d-block'>{money(current.price)} · estoque {Math.max(0, Number(current.stock) || 0)}</small>
+                                {/* Dados fiscais e de compra (só no admin) */}
+                                <dl className='dl-grid mt-2 small'>
+                                    <dt>Fornecedor</dt><dd>{current.supplier || '—'}</dd>
+                                    <dt>Estoque mínimo</dt>
+                                    <dd className={current.minStock != null && Number(current.stock) <= current.minStock ? 'text-danger' : ''}>
+                                        {current.minStock != null ? `${current.minStock}${Number(current.stock) <= current.minStock ? ' — repor' : ''}` : '—'}
+                                    </dd>
+                                    <dt>NCM</dt><dd>{current.ncm || '—'}</dd>
+                                    <dt>Origem</dt><dd>{ORIGIN[current.origin] || current.origin || '—'}</dd>
+                                    <dt>Tributação</dt><dd>{TAX[current.taxType] || current.taxType || '—'}</dd>
+                                </dl>
                                 <button type="button" className='btn-danger-ghost btn-sm mt-2' disabled={busy} onClick={() => setConfirm('unlink')}><BsXLg /> Remover vínculo</button>
                             </>
                         ) : <Skeleton h={180} />

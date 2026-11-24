@@ -4,7 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import {
     BsGrid1X2, BsReceipt, BsPeople, BsBoxSeam, BsTools, BsDiagram3, BsTag, BsList, BsX, BsPersonCircle,
     BsBoxArrowRight, BsImages, BsMenuButtonWide, BsLayoutTextWindow, BsFileText, BsArrowRepeat, BsBell,
-    BsBoxArrowUpRight, BsStars, BsHouseDoor, BsBug,
+    BsBoxArrowUpRight, BsStars, BsHouseDoor, BsBug, BsCartPlus,
 } from 'react-icons/bs';
 import { useAuth } from './AuthContext';
 import api from '../api/admin';
@@ -24,6 +24,7 @@ const NAV = [
     { to: '/marcas', label: 'Marcas', icon: BsTag },
     { to: '/instalacoes', label: 'Instalações', icon: BsTools },
     { to: '/isales', label: 'iSales - Api', icon: BsArrowRepeat, badge: (r) => r?.semIsales },
+    { to: '/reposicao', label: 'Reposição', icon: BsCartPlus },
     { section: 'Site' },
     { to: '/layout/banners', label: 'Banners e logo', icon: BsImages },
     { to: '/layout/menu', label: 'Menu', icon: BsMenuButtonWide },
