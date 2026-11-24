@@ -131,6 +131,11 @@ const api = {
     unlinkIsales: (productId) => data(client.delete(`/api/admin/products/${productId}/isales`)),
     isalesSync: () => data(client.post('/api/admin/isales/sync')),
 
+    // Log de erros e diagnóstico
+    errorLog: () => data(client.get('/api/admin/logs')),
+    clearErrorLog: () => data(client.delete('/api/admin/logs')),
+    testIsales: () => data(client.post('/api/admin/logs/test-isales')),
+
     // Avisos de estoque
     stockAlerts: (status) => data(client.get('/api/admin/stock-alerts', { params: { status } })),
     setStockAlertNotified: (id, notified) => data(client.patch(`/api/admin/stock-alerts/${id}`, { notified })),

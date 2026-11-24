@@ -4,7 +4,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import {
     BsGrid1X2, BsReceipt, BsPeople, BsBoxSeam, BsTools, BsDiagram3, BsTag, BsList, BsX, BsPersonCircle,
     BsBoxArrowRight, BsImages, BsMenuButtonWide, BsLayoutTextWindow, BsFileText, BsArrowRepeat, BsBell,
-    BsBoxArrowUpRight, BsStars, BsHouseDoor,
+    BsBoxArrowUpRight, BsStars, BsHouseDoor, BsBug,
 } from 'react-icons/bs';
 import { useAuth } from './AuthContext';
 import api from '../api/admin';
@@ -31,6 +31,8 @@ const NAV = [
     { to: '/layout/rodape', label: 'Rodapé', icon: BsLayoutTextWindow },
     { to: '/institucional', label: 'Institucional', icon: BsFileText },
     { to: '/conteudo', label: 'Conteúdo das páginas', icon: BsStars, soon: true },
+    { section: 'Sistema' },
+    { to: '/log-erros', label: 'Log de erros', icon: BsBug },
 ];
 
 const Layout = () => {
